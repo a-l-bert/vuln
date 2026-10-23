@@ -43,20 +43,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<h3>Edit Product: <?= htmlspecialchars($product['name']) ?></h3>
+<h3>Edit product</h3>
+<p class="admin-dashboard-intro">Update product details, pricing, or storefront imagery.</p>
 <?php if ($error !== null): ?><div class="error"><?= htmlspecialchars($error) ?></div><?php endif; ?>
 <?php if ($success !== null): ?><p role="status"><?= htmlspecialchars($success) ?></p><?php endif; ?>
-<form method="POST" enctype="multipart/form-data">
-    <label>Name</label>
-    <input type="text" name="name" value="<?= htmlspecialchars($product['name']) ?>" required>
-    <label>Description</label>
-    <textarea name="description"><?= htmlspecialchars($product['description']) ?></textarea>
-    <label>Price</label>
-    <input type="number" step="0.01" name="price" value="<?= (float)$product['price'] ?>" required>
-    <label>Product image URL</label>
-    <input type="url" name="image_url" value="<?= htmlspecialchars($product['image_url'] ?? '') ?>" placeholder="https://example.com/product.jpg">
-    <label>Or upload a replacement image from your computer</label>
-    <input type="file" name="product_image" accept="image/jpeg,image/png,image/gif,image/webp">
-    <label><input type="checkbox" name="remove_image" value="1"> Remove current image</label>
-    <button type="submit">Update Product</button>
-</form>
+<section class="admin-panel">
+    <h4><?= htmlspecialchars($product['name']) ?></h4>
+    <form method="POST" enctype="multipart/form-data" class="admin-form-grid">
+        <label>Name
+            <input type="text" name="name" value="<?= htmlspecialchars($product['name']) ?>" required>
+        </label>
+        <label>Price
+            <input type="number" step="0.01" name="price" value="<?= (float)$product['price'] ?>" required>
+        </label>
+        <label class="admin-field-full">Description
+            <textarea name="description"><?= htmlspecialchars($product['description']) ?></textarea>
+        </label>
+        <label>Product image URL
+            <input type="url" name="image_url" value="<?= htmlspecialchars($product['image_url'] ?? '') ?>" placeholder="https://example.com/product.jpg">
+        </label>
+        <label>Upload a replacement image
+            <input type="file" name="product_image" accept="image/jpeg,image/png,image/gif,image/webp">
+        </label>
+        <label class="admin-field-full"><span><input type="checkbox" name="remove_image" value="1"> Remove current image</span></label>
+        <div class="admin-field-full admin-actions">
+            <button type="submit">Save product</button>
+            <a href="/admin.php?page=products.php">Cancel</a>
+        </div>
+    </form>
+</section>

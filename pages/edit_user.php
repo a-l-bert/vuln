@@ -32,23 +32,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("UPDATE users SET balance = ? WHERE id = ?");
         $stmt->execute([$balance, $id]);
     }
+    $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
+    $stmt->execute([$id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
     $success = true;
 }
 
 ?>
-<h3>Edit User: <?= htmlspecialchars($user['username']) ?></h3>
+<h3>Edit user</h3>
+<p class="admin-dashboard-intro">Update account settings for <?= htmlspecialchars($user['username']) ?>.</p>
 <?php if ($success): ?><p role="status">User updated.</p><?php endif; ?>
-<form method="POST" action="/admin.php?page=edit_user.php&id=<?= (int)$id ?>">
-    <label>Balance</label>
-    <input type="number" step="0.01" name="balance" value="<?= (float)$user['balance'] ?>" required>
-    
-    <?php if ($can_edit_admin): ?>
-    <label>Is Admin</label>
-    <select name="is_admin">
-        <option value="0" <?= !$user['is_admin'] ? 'selected' : '' ?>>No</option>
-        <option value="1" <?= $user['is_admin'] ? 'selected' : '' ?>>Yes</option>
-    </select>
-    <?php endif; ?>
-    
-    <button type="submit">Update User</button>
-</form>
+<section class="admin-panel">
+    <form method="POST" action="/admin.php?page=edit_user.php&amp;id=<?= (int)$id ?>" class="admin-form-grid">
+        <label>Account balance
+            <input type="number" step="0.01" name="balance" value="<?= (float)$user['balance'] ?>" required>
+        </label>
+
+        <?php if ($can_edit_admin): ?>
+        <label>Administrator access
+            <select name="is_admin">
+                <option value="0" <?= !$user['is_admin'] ? 'selected' : '' ?>>Customer</option>
+                <option value="1" <?= $user['is_admin'] ? 'selected' : '' ?>>Administrator</option>
+            </select>
+        </label>
+        <?php endif; ?>
+
+        <div class="admin-field-full admin-actions">
+            <button type="submit">Save changes</button>
+            <a href="/admin.php?page=users.php">Cancel</a>
+        </div>
+    </form>
+</section>

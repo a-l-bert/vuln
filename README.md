@@ -9,12 +9,14 @@ A server-rendered shop built in plain PHP + PDO (no framework) for authorized se
 2. `products.php` / `api/search.php` — product browsing and search.
 3. `profile.php` — profile display and earned-award/certificate history.
 4. `product.php` — product details and validated image display.
-5. `admin.php` — admin pages for managing products, existing users, and orders.
+5. `admin.php` — admin dashboard for managing products, customer accounts, orders, and awards.
 
 Admin product management accepts an image URL or a local JPG, PNG, GIF, or WebP upload.
-Administrators can manage existing user records; public registration and admin user creation
-are disabled. Storefront product cards preserve image aspect ratios and fit images within each
-card.
+Administrators can create customer accounts and manage existing user records; new account
+passwords must be at least eight characters. Password storage follows the active lab hashing
+switch, so the intentionally enabled weak-hashing lab stores them in plaintext. Public
+registration remains disabled. Storefront product cards preserve image aspect ratios and fit
+images within each card.
 
 The current code does not implement every vulnerability named by its configuration switches.
 See [VULNERABILITIES.md](VULNERABILITIES.md) for the source-verified inventory, limitations,
@@ -87,7 +89,7 @@ Verify the retired public registration route is unavailable:
 ```bash
 curl -i http://127.0.0.1:8081/register.php
 ```
-The removed route returns `404 Not Found`. Learners use the seeded demo accounts; user creation is unavailable in both the public shop and admin panel.
+The removed route returns `404 Not Found`. Learners use the seeded demo accounts or an account created by an administrator; public self-registration is unavailable.
 Delete `vulnapp.db` any time to reset to the seeded demo data.
 
 ## Deploying to Render

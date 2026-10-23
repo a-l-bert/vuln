@@ -24,20 +24,25 @@ $heroes = array_merge($flagAwards, $automaticAwards);
 usort($heroes, static fn($left, $right) => strcmp($right['timestamp'], $left['timestamp']));
 ?>
 <h3>Hall of Heroes</h3>
-<table border="1">
-    <tr><th>Learner</th><th>Learner email</th><th>Demo account</th><th>Certificate #</th><th>Flag</th><th>Vulnerability Type</th><th>Time (EAT)</th></tr>
-    <?php if (empty($heroes)): ?>
-    <tr><td colspan="7">No discoveries have been submitted yet.</td></tr>
-    <?php endif; ?>
-    <?php foreach ($heroes as $h): ?>
-    <tr>
-        <td><?= htmlspecialchars($h['learner_name'] ?: 'Legacy award') ?></td>
-        <td><?= htmlspecialchars($h['learner_email'] ?? '') ?></td>
-        <td><?= htmlspecialchars($h['username']) ?><?= $h['email'] !== '' ? ' · ' . htmlspecialchars($h['email']) : '' ?></td>
-        <td><?= htmlspecialchars($h['award_code'] ?? '') ?></td>
-        <td><code><?= htmlspecialchars($h['flag'] ?? ($h['flag_id'] === null ? 'Automatically detected' : 'Legacy entry')) ?></code></td>
-        <td><?= htmlspecialchars($h['vulnerability_name']) ?> (<?= htmlspecialchars($h['vuln_id']) ?>)</td>
-        <td><?= htmlspecialchars(format_eat_datetime($h['timestamp'])) ?></td>
-    </tr>
-    <?php endforeach; ?>
-</table>
+<p class="admin-dashboard-intro">Recognize learners who have completed a lab or submitted a vulnerability discovery.</p>
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead><tr><th>Learner</th><th>Learner email</th><th>Demo account</th><th>Certificate #</th><th>Flag</th><th>Vulnerability type</th><th>Time (EAT)</th></tr></thead>
+        <tbody>
+        <?php if (empty($heroes)): ?>
+            <tr><td colspan="7" class="admin-empty">No discoveries have been submitted yet.</td></tr>
+        <?php endif; ?>
+        <?php foreach ($heroes as $h): ?>
+        <tr>
+            <td><?= htmlspecialchars($h['learner_name'] ?: 'Legacy award') ?></td>
+            <td><?= htmlspecialchars($h['learner_email'] ?? '') ?></td>
+            <td><?= htmlspecialchars($h['username']) ?><?= $h['email'] !== '' ? ' · ' . htmlspecialchars($h['email']) : '' ?></td>
+            <td><?= htmlspecialchars($h['award_code'] ?? '') ?></td>
+            <td><code><?= htmlspecialchars($h['flag'] ?? ($h['flag_id'] === null ? 'Automatically detected' : 'Legacy entry')) ?></code></td>
+            <td><?= htmlspecialchars($h['vulnerability_name']) ?> (<?= htmlspecialchars($h['vuln_id']) ?>)</td>
+            <td><?= htmlspecialchars(format_eat_datetime($h['timestamp'])) ?></td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>

@@ -27,34 +27,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
 // Fetch products
 $products = $pdo->query("SELECT * FROM products")->fetchAll(PDO::FETCH_ASSOC);
 ?>
-<h3>Manage Products</h3>
+<h3>Product catalog</h3>
+<p class="admin-dashboard-intro">Add new items to your storefront or update an existing product's details and price.</p>
 <?php if ($error !== null): ?><div class="error"><?= htmlspecialchars($error) ?></div><?php endif; ?>
 <?php if ($success !== null): ?><p role="status"><?= htmlspecialchars($success) ?></p><?php endif; ?>
-<form method="POST" action="/admin.php?page=products.php" enctype="multipart/form-data">
-    <input type="hidden" name="add_product" value="1">
-    <input type="text" name="name" placeholder="Product Name" required>
-    <textarea name="description" placeholder="Description"></textarea>
-    <input type="number" step="0.01" name="price" placeholder="Price" required>
-    <label>Product image URL</label>
-    <input type="url" name="image_url" placeholder="https://example.com/product.jpg">
-    <label>Or upload an image from your computer</label>
-    <input type="file" name="product_image" accept="image/jpeg,image/png,image/gif,image/webp">
-    <button type="submit">Add Product</button>
-</form>
+<section class="admin-panel">
+    <h4>Add a product</h4>
+    <form method="POST" action="/admin.php?page=products.php" enctype="multipart/form-data" class="admin-form-grid">
+        <input type="hidden" name="add_product" value="1">
+        <label>Product name
+            <input type="text" name="name" placeholder="Product name" required>
+        </label>
+        <label>Price
+            <input type="number" step="0.01" name="price" placeholder="0.00" required>
+        </label>
+        <label class="admin-field-full">Description
+            <textarea name="description" placeholder="Describe the product"></textarea>
+        </label>
+        <label>Product image URL
+            <input type="url" name="image_url" placeholder="https://example.com/product.jpg">
+        </label>
+        <label>Or upload an image
+            <input type="file" name="product_image" accept="image/jpeg,image/png,image/gif,image/webp">
+        </label>
+        <div class="admin-field-full"><button type="submit">Add product</button></div>
+    </form>
+</section>
 
-<table>
-    <tr><th>Image</th><th>ID</th><th>Name</th><th>Price</th><th>Action</th></tr>
-    <?php foreach ($products as $p): ?>
-    <tr>
-        <td>
-            <?php if (!empty($p['image_url'])): ?>
-                <img src="<?= htmlspecialchars($p['image_url']) ?>" alt="<?= htmlspecialchars($p['name']) ?>" style="width:64px; height:64px; object-fit:contain; background:#f8f9fb; border-radius:4px;">
-            <?php endif; ?>
-        </td>
-        <td><?= htmlspecialchars($p['id']) ?></td>
-        <td><?= htmlspecialchars($p['name']) ?></td>
-        <td>$<?= htmlspecialchars($p['price']) ?></td>
-        <td><a href="/admin.php?page=edit_product.php&id=<?= (int)$p['id'] ?>">Edit</a></td>
-    </tr>
-    <?php endforeach; ?>
-</table>
+<h4>Products (<?= count($products) ?>)</h4>
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead><tr><th>Image</th><th>ID</th><th>Name</th><th>Price</th><th>Action</th></tr></thead>
+        <tbody>
+        <?php if (empty($products)): ?>
+            <tr><td colspan="5" class="admin-empty">No products yet. Add your first product above.</td></tr>
+        <?php endif; ?>
+        <?php foreach ($products as $p): ?>
+        <tr>
+            <td>
+                <?php if (!empty($p['image_url'])): ?>
+                    <img src="<?= htmlspecialchars($p['image_url']) ?>" alt="<?= htmlspecialchars($p['name']) ?>" class="admin-image-thumb">
+                <?php else: ?>
+                    <span class="admin-badge">No image</span>
+                <?php endif; ?>
+            </td>
+            <td><?= htmlspecialchars($p['id']) ?></td>
+            <td><strong><?= htmlspecialchars($p['name']) ?></strong></td>
+            <td>$<?= htmlspecialchars($p['price']) ?></td>
+            <td><a href="/admin.php?page=edit_product.php&id=<?= (int)$p['id'] ?>">Edit product</a></td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
