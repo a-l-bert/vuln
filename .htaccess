@@ -1,0 +1,5 @@
+# Secure the lab with basic authentication
+AuthType Basic
+AuthName "Restricted Lab Access"
+AuthUserFile /var/www/html/.htpasswd
+Require valid-user

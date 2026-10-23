@@ -1,0 +1,541 @@
+[Thu Oct 22 13:56:36 2026] PHP 8.5.4 Development Server (http://localhost:8001) started
+[Thu Oct 22 13:56:38 2026] 127.0.0.1:33174 Accepted
+[Thu Oct 22 13:56:38 2026] 127.0.0.1:33174 [200]: HEAD /products.php
+[Thu Oct 22 13:56:38 2026] 127.0.0.1:33174 Closing
+[Thu Oct 22 14:09:40 2026] 127.0.0.1:43558 Accepted
+[Thu Oct 22 14:09:40 2026] 127.0.0.1:43558 [200]: GET /products.php
+[Thu Oct 22 14:09:40 2026] 127.0.0.1:43558 Closing
+[Thu Oct 22 14:09:40 2026] 127.0.0.1:43570 Accepted
+[Thu Oct 22 14:09:40 2026] 127.0.0.1:43570 [302]: GET /favicon.ico
+[Thu Oct 22 14:09:40 2026] 127.0.0.1:43570 Closing
+[Thu Oct 22 14:09:42 2026] 127.0.0.1:43576 Accepted
+[Thu Oct 22 14:09:48 2026] 127.0.0.1:43576 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:09:48 2026] 127.0.0.1:43576 Closing
+[Thu Oct 22 14:11:15 2026] 127.0.0.1:54422 Accepted
+[Thu Oct 22 14:11:20 2026] 127.0.0.1:54422 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:11:20 2026] 127.0.0.1:54422 Closing
+[Thu Oct 22 14:11:37 2026] 127.0.0.1:54710 Accepted
+[Thu Oct 22 14:11:42 2026] 127.0.0.1:54710 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:11:42 2026] 127.0.0.1:54710 Closing
+[Thu Oct 22 14:12:26 2026] 127.0.0.1:40936 Accepted
+[Thu Oct 22 14:12:27 2026] 127.0.0.1:40936 [302]: GET /logout.php
+[Thu Oct 22 14:12:27 2026] 127.0.0.1:40936 Closing
+[Thu Oct 22 14:12:27 2026] 127.0.0.1:40940 Accepted
+[Thu Oct 22 14:12:27 2026] 127.0.0.1:40940 [200]: GET /login.php
+[Thu Oct 22 14:12:27 2026] 127.0.0.1:40940 Closing
+[Thu Oct 22 14:12:27 2026] 127.0.0.1:40956 Accepted
+[Thu Oct 22 14:12:27 2026] 127.0.0.1:40956 [200]: GET /products.php
+[Thu Oct 22 14:12:27 2026] 127.0.0.1:40956 Closing
+[Thu Oct 22 14:12:28 2026] 127.0.0.1:40960 Accepted
+[Thu Oct 22 14:12:33 2026] 127.0.0.1:40960 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:12:33 2026] 127.0.0.1:40960 Closing
+[Thu Oct 22 14:12:33 2026] 127.0.0.1:40964 Accepted
+[Thu Oct 22 14:12:33 2026] 127.0.0.1:40964 [200]: GET /products.php
+[Thu Oct 22 14:12:33 2026] 127.0.0.1:40964 Closing
+[Thu Oct 22 14:12:33 2026] 127.0.0.1:40978 Accepted
+[Thu Oct 22 14:12:36 2026] 127.0.0.1:40978 [200]: GET /product.php?id=1
+[Thu Oct 22 14:12:36 2026] 127.0.0.1:40978 Closing
+[Thu Oct 22 14:12:36 2026] 127.0.0.1:54370 Accepted
+[Thu Oct 22 14:12:36 2026] 127.0.0.1:54370 [200]: GET /products.php
+[Thu Oct 22 14:12:36 2026] 127.0.0.1:54370 Closing
+[Thu Oct 22 14:12:38 2026] 127.0.0.1:54372 Accepted
+[Thu Oct 22 14:12:39 2026] 127.0.0.1:54372 [200]: GET /products.php
+[Thu Oct 22 14:12:39 2026] 127.0.0.1:54372 Closing
+[Thu Oct 22 14:12:40 2026] 127.0.0.1:54378 Accepted
+[Thu Oct 22 14:12:45 2026] 127.0.0.1:54378 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:12:45 2026] 127.0.0.1:54378 Closing
+[Thu Oct 22 14:12:46 2026] 127.0.0.1:46478 Accepted
+[Thu Oct 22 14:12:46 2026] 127.0.0.1:46478 [200]: GET /product.php?id=1
+[Thu Oct 22 14:12:46 2026] 127.0.0.1:46478 Closing
+[Thu Oct 22 14:14:57 2026] 127.0.0.1:57762 Accepted
+[Thu Oct 22 14:14:58 2026] 127.0.0.1:57762 [200]: GET /products.php
+[Thu Oct 22 14:14:58 2026] 127.0.0.1:57762 Closing
+[Thu Oct 22 14:15:00 2026] 127.0.0.1:57768 Accepted
+[Thu Oct 22 14:15:01 2026] 127.0.0.1:57768 [302]: GET /product.php?id=1
+[Thu Oct 22 14:15:01 2026] 127.0.0.1:57768 Closing
+[Thu Oct 22 14:15:01 2026] 127.0.0.1:57776 Accepted
+[Thu Oct 22 14:15:01 2026] 127.0.0.1:57776 [200]: GET /login.php
+[Thu Oct 22 14:15:01 2026] 127.0.0.1:57776 Closing
+[Thu Oct 22 14:15:05 2026] 127.0.0.1:57792 Accepted
+[Thu Oct 22 14:15:05 2026] 127.0.0.1:57792 [200]: GET /products.php
+[Thu Oct 22 14:15:05 2026] 127.0.0.1:57792 Closing
+[Thu Oct 22 14:15:06 2026] 127.0.0.1:43520 Accepted
+[Thu Oct 22 14:15:08 2026] 127.0.0.1:43520 [200]: GET /login.php
+[Thu Oct 22 14:15:08 2026] 127.0.0.1:43520 Closing
+[Thu Oct 22 14:15:08 2026] 127.0.0.1:43528 Accepted
+[Thu Oct 22 14:15:14 2026] 127.0.0.1:43528 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:15:14 2026] 127.0.0.1:43528 Closing
+[Thu Oct 22 14:15:17 2026] 127.0.0.1:39090 Accepted
+[Thu Oct 22 14:15:17 2026] 127.0.0.1:39090 [302]: POST /login.php
+[Thu Oct 22 14:15:17 2026] 127.0.0.1:39090 Closing
+[Thu Oct 22 14:15:17 2026] 127.0.0.1:39096 Accepted
+[Thu Oct 22 14:15:17 2026] 127.0.0.1:39096 [200]: GET /products.php
+[Thu Oct 22 14:15:17 2026] 127.0.0.1:39096 Closing
+[Thu Oct 22 14:15:24 2026] 127.0.0.1:39104 Accepted
+[Thu Oct 22 14:15:25 2026] 127.0.0.1:39104 [302]: GET /logout.php
+[Thu Oct 22 14:15:25 2026] 127.0.0.1:39104 Closing
+[Thu Oct 22 14:15:25 2026] 127.0.0.1:39116 Accepted
+[Thu Oct 22 14:15:25 2026] 127.0.0.1:39116 [200]: GET /login.php
+[Thu Oct 22 14:15:25 2026] 127.0.0.1:39116 Closing
+[Thu Oct 22 14:15:25 2026] 127.0.0.1:39118 Accepted
+[Thu Oct 22 14:15:30 2026] 127.0.0.1:39118 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:15:30 2026] 127.0.0.1:39118 Closing
+[Thu Oct 22 14:15:37 2026] 127.0.0.1:51150 Accepted
+[Thu Oct 22 14:15:37 2026] 127.0.0.1:51150 [302]: POST /login.php
+[Thu Oct 22 14:15:37 2026] 127.0.0.1:51150 Closing
+[Thu Oct 22 14:15:37 2026] 127.0.0.1:51164 Accepted
+[Thu Oct 22 14:15:37 2026] 127.0.0.1:51164 [200]: GET /products.php
+[Thu Oct 22 14:15:37 2026] 127.0.0.1:51164 Closing
+[Thu Oct 22 14:15:37 2026] 127.0.0.1:51170 Accepted
+[Thu Oct 22 14:15:43 2026] 127.0.0.1:51170 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:15:43 2026] 127.0.0.1:51170 Closing
+[Thu Oct 22 14:15:43 2026] 127.0.0.1:51176 Accepted
+[Thu Oct 22 14:15:43 2026] 127.0.0.1:51176 [200]: GET /products.php
+[Thu Oct 22 14:15:43 2026] 127.0.0.1:51176 Closing
+[Thu Oct 22 14:15:43 2026] 127.0.0.1:51190 Accepted
+[Thu Oct 22 14:15:48 2026] 127.0.0.1:51190 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:15:48 2026] 127.0.0.1:51190 Closing
+[Thu Oct 22 14:15:49 2026] 127.0.0.1:51684 Accepted
+[Thu Oct 22 14:15:49 2026] 127.0.0.1:51690 Accepted
+[Thu Oct 22 14:15:49 2026] 127.0.0.1:51684 [200]: GET /profile.php?id=3
+[Thu Oct 22 14:15:49 2026] 127.0.0.1:51684 Closing
+[Thu Oct 22 14:15:49 2026] 127.0.0.1:51690 [200]: GET /products.php
+[Thu Oct 22 14:15:49 2026] 127.0.0.1:51690 Closing
+[Thu Oct 22 14:15:52 2026] 127.0.0.1:51694 Accepted
+[Thu Oct 22 14:15:53 2026] 127.0.0.1:51694 [200]: GET /admin.php
+[Thu Oct 22 14:15:53 2026] 127.0.0.1:51694 Closing
+[Thu Oct 22 14:15:53 2026] 127.0.0.1:51710 Accepted
+[Thu Oct 22 14:15:53 2026] 127.0.0.1:51710 [200]: GET /products.php
+[Thu Oct 22 14:15:53 2026] 127.0.0.1:51710 Closing
+[Thu Oct 22 14:15:54 2026] 127.0.0.1:51722 Accepted
+[Thu Oct 22 14:15:55 2026] 127.0.0.1:51722 [200]: GET /admin.php?page=products.php
+[Thu Oct 22 14:15:55 2026] 127.0.0.1:51722 Closing
+[Thu Oct 22 14:16:01 2026] 127.0.0.1:39966 Accepted
+[Thu Oct 22 14:16:06 2026] 127.0.0.1:39966 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:16:06 2026] 127.0.0.1:39966 Closing
+[Thu Oct 22 14:17:08 2026] 127.0.0.1:56458 Accepted
+[Thu Oct 22 14:17:08 2026] 127.0.0.1:56458 [200]: POST /admin.php?page=products.php
+[Thu Oct 22 14:17:08 2026] 127.0.0.1:56458 Closing
+[Thu Oct 22 14:17:08 2026] 127.0.0.1:56462 Accepted
+[Thu Oct 22 14:17:08 2026] 127.0.0.1:56462 [200]: GET /products.php
+[Thu Oct 22 14:17:08 2026] 127.0.0.1:56462 Closing
+[Thu Oct 22 14:17:12 2026] 127.0.0.1:56464 Accepted
+[Thu Oct 22 14:17:13 2026] 127.0.0.1:56464 [200]: GET /admin.php?page=edit_product.php&id=6
+[Thu Oct 22 14:17:13 2026] 127.0.0.1:56464 Closing
+[Thu Oct 22 14:17:13 2026] 127.0.0.1:56470 Accepted
+[Thu Oct 22 14:17:13 2026] 127.0.0.1:56470 [200]: GET /products.php
+[Thu Oct 22 14:17:13 2026] 127.0.0.1:56470 Closing
+[Thu Oct 22 14:17:41 2026] 127.0.0.1:42466 Accepted
+[Thu Oct 22 14:17:41 2026] 127.0.0.1:42466 [302]: POST /admin.php?page=edit_product.php&id=6
+[Thu Oct 22 14:17:41 2026] 127.0.0.1:42466 Closing
+[Thu Oct 22 14:17:41 2026] 127.0.0.1:42476 Accepted
+[Thu Oct 22 14:17:41 2026] 127.0.0.1:42476 [200]: GET /admin.php?page=products.php
+[Thu Oct 22 14:17:41 2026] 127.0.0.1:42476 Closing
+[Thu Oct 22 14:17:41 2026] 127.0.0.1:42478 Accepted
+[Thu Oct 22 14:17:41 2026] 127.0.0.1:42478 [200]: GET /products.php
+[Thu Oct 22 14:17:41 2026] 127.0.0.1:42478 Closing
+[Thu Oct 22 14:17:42 2026] 127.0.0.1:42490 Accepted
+[Thu Oct 22 14:17:43 2026] 127.0.0.1:42490 [200]: GET /products.php
+[Thu Oct 22 14:17:43 2026] 127.0.0.1:42490 Closing
+[Thu Oct 22 14:17:43 2026] 127.0.0.1:42504 Accepted
+[Thu Oct 22 14:17:49 2026] 127.0.0.1:42504 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:17:49 2026] 127.0.0.1:42504 Closing
+[Thu Oct 22 14:17:52 2026] 127.0.0.1:34236 Accepted
+[Thu Oct 22 14:17:57 2026] 127.0.0.1:34236 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:17:57 2026] 127.0.0.1:34236 Closing
+[Thu Oct 22 14:17:59 2026] 127.0.0.1:36450 Accepted
+[Thu Oct 22 14:18:04 2026] 127.0.0.1:36450 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:18:04 2026] 127.0.0.1:36450 Closing
+[Thu Oct 22 14:18:26 2026] 127.0.0.1:56482 Accepted
+[Thu Oct 22 14:18:31 2026] 127.0.0.1:56482 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:18:31 2026] 127.0.0.1:56482 Closing
+[Thu Oct 22 14:21:54 2026] 127.0.0.1:60218 Accepted
+[Thu Oct 22 14:21:59 2026] 127.0.0.1:60218 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:21:59 2026] 127.0.0.1:60218 Closing
+[Thu Oct 22 14:23:01 2026] 127.0.0.1:36514 Accepted
+[Thu Oct 22 14:23:02 2026] 127.0.0.1:36514 [200]: GET /products.php
+[Thu Oct 22 14:23:02 2026] 127.0.0.1:36514 Closing
+[Thu Oct 22 14:23:04 2026] 127.0.0.1:36522 Accepted
+[Thu Oct 22 14:23:04 2026] 127.0.0.1:36522 [200]: GET /products.php
+[Thu Oct 22 14:23:04 2026] 127.0.0.1:36522 Closing
+[Thu Oct 22 14:23:05 2026] 127.0.0.1:36526 Accepted
+[Thu Oct 22 14:23:06 2026] 127.0.0.1:36526 [200]: GET /admin.php
+[Thu Oct 22 14:23:06 2026] 127.0.0.1:36526 Closing
+[Thu Oct 22 14:23:06 2026] 127.0.0.1:33810 Accepted
+[Thu Oct 22 14:23:08 2026] 127.0.0.1:33810 [200]: GET /admin.php?page=products.php
+[Thu Oct 22 14:23:08 2026] 127.0.0.1:33810 Closing
+[Thu Oct 22 14:23:08 2026] 127.0.0.1:33816 Accepted
+[Thu Oct 22 14:23:08 2026] 127.0.0.1:33816 [200]: GET /products.php
+[Thu Oct 22 14:23:08 2026] 127.0.0.1:33816 Closing
+[Thu Oct 22 14:23:13 2026] 127.0.0.1:33828 Accepted
+[Thu Oct 22 14:23:14 2026] 127.0.0.1:33828 [200]: GET /admin.php?page=edit_product.php&id=6
+[Thu Oct 22 14:23:14 2026] 127.0.0.1:33828 Closing
+[Thu Oct 22 14:23:44 2026] 127.0.0.1:34382 Accepted
+[Thu Oct 22 14:23:44 2026] 127.0.0.1:34382 [302]: POST /admin.php?page=edit_product.php&id=6
+[Thu Oct 22 14:23:44 2026] 127.0.0.1:34382 Closing
+[Thu Oct 22 14:23:44 2026] 127.0.0.1:34388 Accepted
+[Thu Oct 22 14:23:44 2026] 127.0.0.1:34388 [200]: GET /admin.php?page=products.php
+[Thu Oct 22 14:23:44 2026] 127.0.0.1:34388 Closing
+[Thu Oct 22 14:23:44 2026] 127.0.0.1:34400 Accepted
+[Thu Oct 22 14:23:44 2026] 127.0.0.1:34400 [200]: GET /products.php
+[Thu Oct 22 14:23:44 2026] 127.0.0.1:34400 Closing
+[Thu Oct 22 14:23:48 2026] 127.0.0.1:42914 Accepted
+[Thu Oct 22 14:23:49 2026] 127.0.0.1:42914 [200]: GET /products.php
+[Thu Oct 22 14:23:49 2026] 127.0.0.1:42914 Closing
+[Thu Oct 22 14:23:49 2026] 127.0.0.1:42928 Accepted
+[Thu Oct 22 14:23:55 2026] 127.0.0.1:42928 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:23:55 2026] 127.0.0.1:42928 Closing
+[Thu Oct 22 14:23:56 2026] 127.0.0.1:46964 Accepted
+[Thu Oct 22 14:24:01 2026] 127.0.0.1:46964 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:24:01 2026] 127.0.0.1:46964 Closing
+[Thu Oct 22 14:24:23 2026] 127.0.0.1:48752 Accepted
+[Thu Oct 22 14:24:24 2026] 127.0.0.1:48752 [200]: GET /admin.php
+[Thu Oct 22 14:24:24 2026] 127.0.0.1:48752 Closing
+[Thu Oct 22 14:24:24 2026] 127.0.0.1:48764 Accepted
+[Thu Oct 22 14:24:24 2026] 127.0.0.1:48764 [200]: GET /products.php
+[Thu Oct 22 14:24:24 2026] 127.0.0.1:48764 Closing
+[Thu Oct 22 14:24:25 2026] 127.0.0.1:48770 Accepted
+[Thu Oct 22 14:24:26 2026] 127.0.0.1:48770 [200]: GET /admin.php?page=products.php
+[Thu Oct 22 14:24:26 2026] 127.0.0.1:48770 Closing
+[Thu Oct 22 14:24:26 2026] 127.0.0.1:47600 Accepted
+[Thu Oct 22 14:24:26 2026] 127.0.0.1:47600 [200]: GET /products.php
+[Thu Oct 22 14:24:26 2026] 127.0.0.1:47600 Closing
+[Thu Oct 22 14:24:29 2026] 127.0.0.1:47616 Accepted
+[Thu Oct 22 14:24:30 2026] 127.0.0.1:47616 [200]: GET /admin.php?page=edit_product.php&id=6
+[Thu Oct 22 14:24:30 2026] 127.0.0.1:47616 Closing
+[Thu Oct 22 14:24:35 2026] 127.0.0.1:47628 Accepted
+[Thu Oct 22 14:24:35 2026] 127.0.0.1:47628 [302]: POST /admin.php?page=edit_product.php&id=6
+[Thu Oct 22 14:24:35 2026] 127.0.0.1:47628 Closing
+[Thu Oct 22 14:24:35 2026] 127.0.0.1:47634 Accepted
+[Thu Oct 22 14:24:35 2026] 127.0.0.1:47634 [200]: GET /admin.php?page=products.php
+[Thu Oct 22 14:24:35 2026] 127.0.0.1:47634 Closing
+[Thu Oct 22 14:24:35 2026] 127.0.0.1:47640 Accepted
+[Thu Oct 22 14:24:35 2026] 127.0.0.1:47640 [200]: GET /products.php
+[Thu Oct 22 14:24:35 2026] 127.0.0.1:47640 Closing
+[Thu Oct 22 14:24:36 2026] 127.0.0.1:53176 Accepted
+[Thu Oct 22 14:24:42 2026] 127.0.0.1:53176 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:24:42 2026] 127.0.0.1:53176 Closing
+[Thu Oct 22 14:24:42 2026] 127.0.0.1:53182 Accepted
+[Thu Oct 22 14:24:43 2026] 127.0.0.1:53182 [200]: GET /products.php
+[Thu Oct 22 14:24:43 2026] 127.0.0.1:53182 Closing
+[Thu Oct 22 14:24:43 2026] 127.0.0.1:53198 Accepted
+[Thu Oct 22 14:24:48 2026] 127.0.0.1:53198 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:24:48 2026] 127.0.0.1:53198 Closing
+[Thu Oct 22 14:25:33 2026] 127.0.0.1:49444 Accepted
+[Thu Oct 22 14:25:33 2026] 127.0.0.1:49444 [302]: GET /logout.php
+[Thu Oct 22 14:25:33 2026] 127.0.0.1:49444 Closing
+[Thu Oct 22 14:25:33 2026] 127.0.0.1:49454 Accepted
+[Thu Oct 22 14:25:33 2026] 127.0.0.1:49454 [200]: GET /login.php
+[Thu Oct 22 14:25:33 2026] 127.0.0.1:49454 Closing
+[Thu Oct 22 14:25:33 2026] 127.0.0.1:49468 Accepted
+[Thu Oct 22 14:25:33 2026] 127.0.0.1:49468 [200]: GET /products.php
+[Thu Oct 22 14:25:33 2026] 127.0.0.1:49468 Closing
+[Thu Oct 22 14:25:38 2026] 127.0.0.1:55670 Accepted
+[Thu Oct 22 14:25:38 2026] 127.0.0.1:55670 [302]: POST /login.php
+[Thu Oct 22 14:25:38 2026] 127.0.0.1:55670 Closing
+[Thu Oct 22 14:25:38 2026] 127.0.0.1:55672 Accepted
+[Thu Oct 22 14:25:38 2026] 127.0.0.1:55672 [200]: GET /products.php
+[Thu Oct 22 14:25:38 2026] 127.0.0.1:55672 Closing
+[Thu Oct 22 14:25:38 2026] 127.0.0.1:55676 Accepted
+[Thu Oct 22 14:25:44 2026] 127.0.0.1:55676 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:25:44 2026] 127.0.0.1:55676 Closing
+[Thu Oct 22 14:26:40 2026] 127.0.0.1:52830 Accepted
+[Thu Oct 22 14:26:40 2026] 127.0.0.1:52830 [200]: GET /products.php
+[Thu Oct 22 14:26:40 2026] 127.0.0.1:52830 Closing
+[Thu Oct 22 14:28:24 2026] 127.0.0.1:36956 Accepted
+[Thu Oct 22 14:28:24 2026] 127.0.0.1:36956 [200]: GET /products.php?q=albert
+[Thu Oct 22 14:28:24 2026] 127.0.0.1:36956 Closing
+[Thu Oct 22 14:28:24 2026] 127.0.0.1:36962 Accepted
+[Thu Oct 22 14:28:24 2026] 127.0.0.1:36962 [200]: GET /products.php
+[Thu Oct 22 14:28:24 2026] 127.0.0.1:36962 Closing
+[Thu Oct 22 14:28:32 2026] 127.0.0.1:58652 Accepted
+[Thu Oct 22 14:28:32 2026] 127.0.0.1:58652 [200]: GET /products.php?q=police
+[Thu Oct 22 14:28:32 2026] 127.0.0.1:58652 Closing
+[Thu Oct 22 14:28:32 2026] 127.0.0.1:58668 Accepted
+[Thu Oct 22 14:28:32 2026] 127.0.0.1:58668 [200]: GET /products.php
+[Thu Oct 22 14:28:32 2026] 127.0.0.1:58668 Closing
+[Thu Oct 22 14:30:00 2026] 127.0.0.1:57028 Accepted
+[Thu Oct 22 14:30:01 2026] 127.0.0.1:57028 [200]: GET /profile.php?id=4
+[Thu Oct 22 14:30:01 2026] 127.0.0.1:57028 Closing
+[Thu Oct 22 14:30:01 2026] 127.0.0.1:57038 Accepted
+[Thu Oct 22 14:30:01 2026] 127.0.0.1:57038 [200]: GET /products.php
+[Thu Oct 22 14:30:01 2026] 127.0.0.1:57038 Closing
+[Thu Oct 22 14:30:04 2026] 127.0.0.1:57044 Accepted
+[Thu Oct 22 14:30:09 2026] 127.0.0.1:57044 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:30:09 2026] 127.0.0.1:57044 Closing
+[Thu Oct 22 14:30:14 2026] 127.0.0.1:55048 Accepted
+[Thu Oct 22 14:30:18 2026] 127.0.0.1:55048 [302]: GET /logout.php
+[Thu Oct 22 14:30:18 2026] 127.0.0.1:55048 Closing
+[Thu Oct 22 14:30:18 2026] 127.0.0.1:36656 Accepted
+[Thu Oct 22 14:30:18 2026] 127.0.0.1:36656 [200]: GET /login.php
+[Thu Oct 22 14:30:18 2026] 127.0.0.1:36656 Closing
+[Thu Oct 22 14:30:18 2026] 127.0.0.1:36660 Accepted
+[Thu Oct 22 14:30:18 2026] 127.0.0.1:36660 [200]: GET /products.php
+[Thu Oct 22 14:30:18 2026] 127.0.0.1:36660 Closing
+[Thu Oct 22 14:30:21 2026] 127.0.0.1:36672 Accepted
+[Thu Oct 22 14:30:21 2026] 127.0.0.1:36672 [302]: POST /login.php
+[Thu Oct 22 14:30:21 2026] 127.0.0.1:36672 Closing
+[Thu Oct 22 14:30:21 2026] 127.0.0.1:36686 Accepted
+[Thu Oct 22 14:30:21 2026] 127.0.0.1:36686 [200]: GET /products.php
+[Thu Oct 22 14:30:21 2026] 127.0.0.1:36686 Closing
+[Thu Oct 22 14:30:21 2026] 127.0.0.1:36700 Accepted
+[Thu Oct 22 14:30:21 2026] 127.0.0.1:36700 [404]: GET /api/search.php?q= - No such file or directory
+[Thu Oct 22 14:30:21 2026] 127.0.0.1:36700 Closing
+[Thu Oct 22 14:30:29 2026] 127.0.0.1:60494 Accepted
+[Thu Oct 22 14:30:30 2026] 127.0.0.1:60494 [302]: GET /logout.php
+[Thu Oct 22 14:30:30 2026] 127.0.0.1:60494 Closing
+[Thu Oct 22 14:30:30 2026] 127.0.0.1:60496 Accepted
+[Thu Oct 22 14:30:30 2026] 127.0.0.1:60496 [200]: GET /login.php
+[Thu Oct 22 14:30:30 2026] 127.0.0.1:60496 Closing
+[Thu Oct 22 14:30:30 2026] 127.0.0.1:60502 Accepted
+[Thu Oct 22 14:30:33 2026] 127.0.0.1:60502 [302]: POST /login.php
+[Thu Oct 22 14:30:33 2026] 127.0.0.1:60502 Closing
+[Thu Oct 22 14:30:33 2026] 127.0.0.1:60518 Accepted
+[Thu Oct 22 14:30:33 2026] 127.0.0.1:60518 [200]: GET /products.php
+[Thu Oct 22 14:30:33 2026] 127.0.0.1:60518 Closing
+[Thu Oct 22 14:30:33 2026] 127.0.0.1:60526 Accepted
+[Thu Oct 22 14:30:33 2026] 127.0.0.1:60526 [404]: GET /api/search.php?q= - No such file or directory
+[Thu Oct 22 14:30:33 2026] 127.0.0.1:60526 Closing
+[Thu Oct 22 14:31:32 2026] 127.0.0.1:48318 Accepted
+[Thu Oct 22 14:31:32 2026] 127.0.0.1:48318 [200]: GET /products.php
+[Thu Oct 22 14:31:32 2026] 127.0.0.1:48318 Closing
+[Thu Oct 22 14:31:32 2026] 127.0.0.1:48320 Accepted
+[Thu Oct 22 14:31:32 2026] 127.0.0.1:48320 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:31:32 2026] 127.0.0.1:48320 Closing
+[Thu Oct 22 14:31:33 2026] 127.0.0.1:48322 Accepted
+[Thu Oct 22 14:31:35 2026] 127.0.0.1:48322 [302]: GET /logout.php
+[Thu Oct 22 14:31:35 2026] 127.0.0.1:48322 Closing
+[Thu Oct 22 14:31:35 2026] 127.0.0.1:48336 Accepted
+[Thu Oct 22 14:31:35 2026] 127.0.0.1:48336 [200]: GET /login.php
+[Thu Oct 22 14:31:35 2026] 127.0.0.1:48336 Closing
+[Thu Oct 22 14:31:35 2026] 127.0.0.1:48340 Accepted
+[Thu Oct 22 14:31:35 2026] 127.0.0.1:48340 [200]: GET /products.php
+[Thu Oct 22 14:31:35 2026] 127.0.0.1:48340 Closing
+[Thu Oct 22 14:31:38 2026] 127.0.0.1:47818 Accepted
+[Thu Oct 22 14:31:38 2026] 127.0.0.1:47818 [302]: POST /login.php
+[Thu Oct 22 14:31:38 2026] 127.0.0.1:47818 Closing
+[Thu Oct 22 14:31:38 2026] 127.0.0.1:47824 Accepted
+[Thu Oct 22 14:31:38 2026] 127.0.0.1:47824 [200]: GET /products.php
+[Thu Oct 22 14:31:38 2026] 127.0.0.1:47824 Closing
+[Thu Oct 22 14:31:39 2026] 127.0.0.1:47826 Accepted
+[Thu Oct 22 14:31:39 2026] 127.0.0.1:47826 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:31:39 2026] 127.0.0.1:47826 Closing
+[Thu Oct 22 14:31:52 2026] 127.0.0.1:37578 Accepted
+[Thu Oct 22 14:31:52 2026] 127.0.0.1:37578 [200]: GET /api/search.php?q=a
+[Thu Oct 22 14:31:52 2026] 127.0.0.1:37578 Closing
+[Thu Oct 22 14:31:56 2026] 127.0.0.1:52238 Accepted
+[Thu Oct 22 14:31:56 2026] 127.0.0.1:52238 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:31:56 2026] 127.0.0.1:52238 Closing
+[Thu Oct 22 14:31:58 2026] 127.0.0.1:52248 Accepted
+[Thu Oct 22 14:31:58 2026] 127.0.0.1:52248 [200]: GET /api/search.php?q=p
+[Thu Oct 22 14:31:58 2026] 127.0.0.1:52248 Closing
+[Thu Oct 22 14:31:58 2026] 127.0.0.1:52262 Accepted
+[Thu Oct 22 14:31:58 2026] 127.0.0.1:52262 [200]: GET /api/search.php?q=po
+[Thu Oct 22 14:31:58 2026] 127.0.0.1:52262 Closing
+[Thu Oct 22 14:32:02 2026] 127.0.0.1:52268 Accepted
+[Thu Oct 22 14:32:02 2026] 127.0.0.1:52268 [200]: GET /api/search.php?q=p
+[Thu Oct 22 14:32:02 2026] 127.0.0.1:52268 Closing
+[Thu Oct 22 14:32:02 2026] 127.0.0.1:52278 Accepted
+[Thu Oct 22 14:32:02 2026] 127.0.0.1:52278 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:32:02 2026] 127.0.0.1:52278 Closing
+[Thu Oct 22 14:32:03 2026] 127.0.0.1:52280 Accepted
+[Thu Oct 22 14:32:03 2026] 127.0.0.1:52280 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:32:03 2026] 127.0.0.1:52280 Closing
+[Thu Oct 22 14:32:07 2026] 127.0.0.1:47792 Accepted
+[Thu Oct 22 14:32:07 2026] 127.0.0.1:47792 [200]: GET /api/search.php?q=p
+[Thu Oct 22 14:32:07 2026] 127.0.0.1:47792 Closing
+[Thu Oct 22 14:32:07 2026] 127.0.0.1:47806 Accepted
+[Thu Oct 22 14:32:07 2026] 127.0.0.1:47806 [200]: GET /api/search.php?q=po
+[Thu Oct 22 14:32:07 2026] 127.0.0.1:47806 Closing
+[Thu Oct 22 14:32:10 2026] 127.0.0.1:47814 Accepted
+[Thu Oct 22 14:32:10 2026] 127.0.0.1:47814 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:32:10 2026] 127.0.0.1:47814 Closing
+[Thu Oct 22 14:32:18 2026] 127.0.0.1:55588 Accepted
+[Thu Oct 22 14:32:23 2026] 127.0.0.1:55588 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:32:23 2026] 127.0.0.1:55588 Closing
+[Thu Oct 22 14:44:02 2026] 127.0.0.1:54450 Accepted
+[Thu Oct 22 14:44:03 2026] 127.0.0.1:54450 [200]: GET /admin.php
+[Thu Oct 22 14:44:03 2026] 127.0.0.1:54450 Closing
+[Thu Oct 22 14:44:03 2026] 127.0.0.1:54458 Accepted
+[Thu Oct 22 14:44:03 2026] 127.0.0.1:54458 [200]: GET /products.php
+[Thu Oct 22 14:44:03 2026] 127.0.0.1:54458 Closing
+[Thu Oct 22 14:44:04 2026] 127.0.0.1:54470 Accepted
+[Thu Oct 22 14:44:05 2026] 127.0.0.1:54470 [200]: GET /admin.php
+[Thu Oct 22 14:44:05 2026] 127.0.0.1:54470 Closing
+[Thu Oct 22 14:44:05 2026] 127.0.0.1:54482 Accepted
+[Thu Oct 22 14:44:05 2026] 127.0.0.1:54482 [200]: GET /products.php
+[Thu Oct 22 14:44:05 2026] 127.0.0.1:54482 Closing
+[Thu Oct 22 14:44:06 2026] 127.0.0.1:44644 Accepted
+[Thu Oct 22 14:44:06 2026] 127.0.0.1:44644 [200]: GET /admin.php
+[Thu Oct 22 14:44:06 2026] 127.0.0.1:44644 Closing
+[Thu Oct 22 14:44:06 2026] 127.0.0.1:44652 Accepted
+[Thu Oct 22 14:44:07 2026] 127.0.0.1:44652 [200]: GET /admin.php
+[Thu Oct 22 14:44:07 2026] 127.0.0.1:44652 Closing
+[Thu Oct 22 14:44:07 2026] 127.0.0.1:44662 Accepted
+[Thu Oct 22 14:44:07 2026] 127.0.0.1:44662 [200]: GET /admin.php
+[Thu Oct 22 14:44:07 2026] 127.0.0.1:44662 Closing
+[Thu Oct 22 14:44:07 2026] 127.0.0.1:44668 Accepted
+[Thu Oct 22 14:44:09 2026] 127.0.0.1:44668 [302]: GET /logout.php
+[Thu Oct 22 14:44:09 2026] 127.0.0.1:44668 Closing
+[Thu Oct 22 14:44:09 2026] 127.0.0.1:44672 Accepted
+[Thu Oct 22 14:44:09 2026] 127.0.0.1:44672 [200]: GET /login.php
+[Thu Oct 22 14:44:09 2026] 127.0.0.1:44672 Closing
+[Thu Oct 22 14:44:09 2026] 127.0.0.1:44688 Accepted
+[Thu Oct 22 14:44:13 2026] 127.0.0.1:44688 [302]: POST /login.php
+[Thu Oct 22 14:44:13 2026] 127.0.0.1:44688 Closing
+[Thu Oct 22 14:44:13 2026] 127.0.0.1:44696 Accepted
+[Thu Oct 22 14:44:13 2026] 127.0.0.1:44696 [200]: GET /products.php
+[Thu Oct 22 14:44:13 2026] 127.0.0.1:44696 Closing
+[Thu Oct 22 14:44:13 2026] 127.0.0.1:44710 Accepted
+[Thu Oct 22 14:44:13 2026] 127.0.0.1:44710 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:44:13 2026] 127.0.0.1:44710 Closing
+[Thu Oct 22 14:44:14 2026] 127.0.0.1:44726 Accepted
+[Thu Oct 22 14:44:19 2026] 127.0.0.1:44726 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:44:19 2026] 127.0.0.1:44726 Closing
+[Thu Oct 22 14:44:23 2026] 127.0.0.1:39756 Accepted
+[Thu Oct 22 14:44:23 2026] 127.0.0.1:39756 [200]: GET /products.php
+[Thu Oct 22 14:44:23 2026] 127.0.0.1:39756 Closing
+[Thu Oct 22 14:44:23 2026] 127.0.0.1:39768 Accepted
+[Thu Oct 22 14:44:23 2026] 127.0.0.1:39768 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:44:23 2026] 127.0.0.1:39768 Closing
+[Thu Oct 22 14:44:27 2026] 127.0.0.1:49168 Accepted
+[Thu Oct 22 14:44:28 2026] 127.0.0.1:49168 [200]: GET /profile.php?id=4
+[Thu Oct 22 14:44:28 2026] 127.0.0.1:49168 Closing
+[Thu Oct 22 14:44:28 2026] 127.0.0.1:49170 Accepted
+[Thu Oct 22 14:44:28 2026] 127.0.0.1:49170 [200]: GET /products.php
+[Thu Oct 22 14:44:28 2026] 127.0.0.1:49170 Closing
+[Thu Oct 22 14:44:29 2026] 127.0.0.1:49174 Accepted
+[Thu Oct 22 14:44:31 2026] 127.0.0.1:49174 [200]: GET /products.php
+[Thu Oct 22 14:44:31 2026] 127.0.0.1:49174 Closing
+[Thu Oct 22 14:44:31 2026] 127.0.0.1:49180 Accepted
+[Thu Oct 22 14:44:31 2026] 127.0.0.1:49180 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:44:31 2026] 127.0.0.1:49180 Closing
+[Thu Oct 22 14:46:21 2026] 127.0.0.1:36968 Accepted
+[Thu Oct 22 14:46:22 2026] 127.0.0.1:36968 [302]: GET /logout.php
+[Thu Oct 22 14:46:22 2026] 127.0.0.1:36968 Closing
+[Thu Oct 22 14:46:22 2026] 127.0.0.1:36972 Accepted
+[Thu Oct 22 14:46:22 2026] 127.0.0.1:36972 [200]: GET /login.php
+[Thu Oct 22 14:46:22 2026] 127.0.0.1:36972 Closing
+[Thu Oct 22 14:46:22 2026] 127.0.0.1:36974 Accepted
+[Thu Oct 22 14:46:22 2026] 127.0.0.1:36974 [200]: GET /products.php
+[Thu Oct 22 14:46:22 2026] 127.0.0.1:36974 Closing
+[Thu Oct 22 14:46:22 2026] 127.0.0.1:36976 Accepted
+[Thu Oct 22 14:46:25 2026] 127.0.0.1:36976 [302]: POST /login.php
+[Thu Oct 22 14:46:25 2026] 127.0.0.1:36976 Closing
+[Thu Oct 22 14:46:25 2026] 127.0.0.1:36988 Accepted
+[Thu Oct 22 14:46:25 2026] 127.0.0.1:36988 [200]: GET /products.php
+[Thu Oct 22 14:46:25 2026] 127.0.0.1:36988 Closing
+[Thu Oct 22 14:46:25 2026] 127.0.0.1:36992 Accepted
+[Thu Oct 22 14:46:25 2026] 127.0.0.1:36992 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:46:25 2026] 127.0.0.1:36992 Closing
+[Thu Oct 22 14:46:26 2026] 127.0.0.1:37184 Accepted
+[Thu Oct 22 14:46:31 2026] 127.0.0.1:37184 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:46:31 2026] 127.0.0.1:37184 Closing
+[Thu Oct 22 14:49:25 2026] 127.0.0.1:53670 Accepted
+[Thu Oct 22 14:49:25 2026] 127.0.0.1:53670 [200]: GET /products.php
+[Thu Oct 22 14:49:25 2026] 127.0.0.1:53670 Closing
+[Thu Oct 22 14:49:25 2026] 127.0.0.1:53676 Accepted
+[Thu Oct 22 14:49:25 2026] 127.0.0.1:53676 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:49:25 2026] 127.0.0.1:53676 Closing
+[Thu Oct 22 14:49:29 2026] 127.0.0.1:49334 Accepted
+[Thu Oct 22 14:49:34 2026] 127.0.0.1:49334 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:49:34 2026] 127.0.0.1:49334 Closing
+[Thu Oct 22 14:49:35 2026] 127.0.0.1:49350 Accepted
+[Thu Oct 22 14:49:35 2026] 127.0.0.1:49350 [200]: GET /products.php
+[Thu Oct 22 14:49:35 2026] 127.0.0.1:49350 Closing
+[Thu Oct 22 14:49:35 2026] 127.0.0.1:49366 Accepted
+[Thu Oct 22 14:49:35 2026] 127.0.0.1:49366 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:49:35 2026] 127.0.0.1:49366 Closing
+[Thu Oct 22 14:49:36 2026] 127.0.0.1:57610 Accepted
+[Thu Oct 22 14:49:41 2026] 127.0.0.1:57610 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 14:49:41 2026] 127.0.0.1:57610 Closing
+[Thu Oct 22 14:54:52 2026] 127.0.0.1:55176 Accepted
+[Thu Oct 22 14:54:52 2026] 127.0.0.1:55176 [200]: GET /products.php
+[Thu Oct 22 14:54:52 2026] 127.0.0.1:55176 Closing
+[Thu Oct 22 14:54:52 2026] 127.0.0.1:55190 Accepted
+[Thu Oct 22 14:54:52 2026] 127.0.0.1:55190 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:54:52 2026] 127.0.0.1:55190 Closing
+[Thu Oct 22 14:59:11 2026] 127.0.0.1:38950 Accepted
+[Thu Oct 22 14:59:11 2026] 127.0.0.1:38950 [200]: GET /products.php
+[Thu Oct 22 14:59:11 2026] 127.0.0.1:38950 Closing
+[Thu Oct 22 14:59:11 2026] 127.0.0.1:38954 Accepted
+[Thu Oct 22 14:59:11 2026] 127.0.0.1:38954 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:59:11 2026] 127.0.0.1:38954 Closing
+[Thu Oct 22 14:59:12 2026] 127.0.0.1:38962 Accepted
+[Thu Oct 22 14:59:12 2026] 127.0.0.1:38962 [200]: GET /products.php
+[Thu Oct 22 14:59:12 2026] 127.0.0.1:38962 Closing
+[Thu Oct 22 14:59:12 2026] 127.0.0.1:38970 Accepted
+[Thu Oct 22 14:59:12 2026] 127.0.0.1:38970 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:59:12 2026] 127.0.0.1:38970 Closing
+[Thu Oct 22 14:59:13 2026] 127.0.0.1:38986 Accepted
+[Thu Oct 22 14:59:14 2026] 127.0.0.1:38986 [302]: GET /logout.php
+[Thu Oct 22 14:59:14 2026] 127.0.0.1:38986 Closing
+[Thu Oct 22 14:59:14 2026] 127.0.0.1:38994 Accepted
+[Thu Oct 22 14:59:14 2026] 127.0.0.1:38994 [200]: GET /login.php
+[Thu Oct 22 14:59:14 2026] 127.0.0.1:38994 Closing
+[Thu Oct 22 14:59:14 2026] 127.0.0.1:39006 Accepted
+[Thu Oct 22 14:59:14 2026] 127.0.0.1:39006 [200]: GET /products.php
+[Thu Oct 22 14:59:14 2026] 127.0.0.1:39006 Closing
+[Thu Oct 22 14:59:17 2026] 127.0.0.1:53166 Accepted
+[Thu Oct 22 14:59:19 2026] 127.0.0.1:53166 [302]: POST /login.php
+[Thu Oct 22 14:59:19 2026] 127.0.0.1:53166 Closing
+[Thu Oct 22 14:59:19 2026] 127.0.0.1:53182 Accepted
+[Thu Oct 22 14:59:19 2026] 127.0.0.1:53182 [200]: GET /products.php
+[Thu Oct 22 14:59:19 2026] 127.0.0.1:53182 Closing
+[Thu Oct 22 14:59:19 2026] 127.0.0.1:53188 Accepted
+[Thu Oct 22 14:59:19 2026] 127.0.0.1:53188 [200]: GET /api/search.php?q=
+[Thu Oct 22 14:59:19 2026] 127.0.0.1:53188 Closing
+[Thu Oct 22 14:59:20 2026] 127.0.0.1:53204 Accepted
+[Thu Oct 22 14:59:22 2026] 127.0.0.1:53204 [200]: GET /admin.php
+[Thu Oct 22 14:59:22 2026] 127.0.0.1:53204 Closing
+[Thu Oct 22 14:59:22 2026] 127.0.0.1:53212 Accepted
+[Thu Oct 22 14:59:22 2026] 127.0.0.1:53212 [200]: GET /products.php
+[Thu Oct 22 14:59:22 2026] 127.0.0.1:53212 Closing
+[Thu Oct 22 14:59:25 2026] 127.0.0.1:53228 Accepted
+[Thu Oct 22 14:59:27 2026] 127.0.0.1:53228 [200]: GET /admin.php?page=heroes.php
+[Thu Oct 22 14:59:27 2026] 127.0.0.1:53228 Closing
+[Thu Oct 22 15:03:16 2026] 127.0.0.1:40644 Accepted
+[Thu Oct 22 15:03:17 2026] 127.0.0.1:40644 [302]: GET /logout.php
+[Thu Oct 22 15:03:17 2026] 127.0.0.1:40644 Closing
+[Thu Oct 22 15:03:18 2026] 127.0.0.1:40646 Accepted
+[Thu Oct 22 15:03:18 2026] 127.0.0.1:40646 [200]: GET /login.php
+[Thu Oct 22 15:03:18 2026] 127.0.0.1:40646 Closing
+[Thu Oct 22 15:03:18 2026] 127.0.0.1:40654 Accepted
+[Thu Oct 22 15:03:18 2026] 127.0.0.1:40654 [200]: GET /products.php
+[Thu Oct 22 15:03:18 2026] 127.0.0.1:40654 Closing
+[Thu Oct 22 15:03:18 2026] 127.0.0.1:40658 Accepted
+[Thu Oct 22 15:03:23 2026] 127.0.0.1:40658 Closed without sending a request; it was probably just an unused speculative preconnection
+[Thu Oct 22 15:03:23 2026] 127.0.0.1:40658 Closing
+[Thu Oct 22 15:03:24 2026] 127.0.0.1:40660 Accepted
+[Thu Oct 22 15:03:24 2026] 127.0.0.1:40660 [302]: POST /login.php
+[Thu Oct 22 15:03:24 2026] 127.0.0.1:40660 Closing
+[Thu Oct 22 15:03:24 2026] 127.0.0.1:40664 Accepted
+[Thu Oct 22 15:03:24 2026] 127.0.0.1:40664 [200]: GET /products.php
+[Thu Oct 22 15:03:24 2026] 127.0.0.1:40664 Closing
+[Thu Oct 22 15:03:24 2026] 127.0.0.1:40674 Accepted
+[Thu Oct 22 15:03:24 2026] 127.0.0.1:40674 [200]: GET /api/search.php?q=
+[Thu Oct 22 15:03:24 2026] 127.0.0.1:40674 Closing
+[Thu Oct 22 15:03:25 2026] 127.0.0.1:40680 Accepted
+[Thu Oct 22 15:03:29 2026] 127.0.0.1:40680 [200]: GET /profile.php?id=4
+[Thu Oct 22 15:03:29 2026] 127.0.0.1:40680 Closing
+[Thu Oct 22 15:03:29 2026] 127.0.0.1:50842 Accepted
+[Thu Oct 22 15:03:29 2026] 127.0.0.1:50842 [200]: GET /products.php
+[Thu Oct 22 15:03:29 2026] 127.0.0.1:50842 Closing
+[Thu Oct 22 15:03:31 2026] 127.0.0.1:50852 Accepted
+[Thu Oct 22 15:03:31 2026] 127.0.0.1:50852 [200]: GET /profile.php?id=4
+[Thu Oct 22 15:03:31 2026] 127.0.0.1:50852 Closing
+[Thu Oct 22 15:03:31 2026] 127.0.0.1:50868 Accepted
+[Thu Oct 22 15:03:31 2026] 127.0.0.1:50868 [200]: GET /products.php
+[Thu Oct 22 15:03:31 2026] 127.0.0.1:50868 Closing
+[Thu Oct 22 15:07:13 2026] 127.0.0.1:41336 Accepted
+[Thu Oct 22 15:07:13 2026] 127.0.0.1:41336 [200]: GET /profile.php?id=4
+[Thu Oct 22 15:07:13 2026] 127.0.0.1:41336 Closing
+[Thu Oct 22 15:07:13 2026] 127.0.0.1:41352 Accepted
+[Thu Oct 22 15:07:13 2026] 127.0.0.1:41352 [200]: GET /products.php
+[Thu Oct 22 15:07:13 2026] 127.0.0.1:41352 Closing
+[Thu Oct 22 15:07:19 2026] 127.0.0.1:53850 Accepted
+[Thu Oct 22 15:07:21 2026] 127.0.0.1:53850 [200]: GET /submit_flag.php
+[Thu Oct 22 15:07:21 2026] 127.0.0.1:53850 Closing
+[Thu Oct 22 15:07:21 2026] 127.0.0.1:53852 Accepted
+[Thu Oct 22 15:07:21 2026] 127.0.0.1:53852 [200]: GET /products.php
+[Thu Oct 22 15:07:21 2026] 127.0.0.1:53852 Closing

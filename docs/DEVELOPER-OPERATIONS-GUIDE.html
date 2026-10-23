@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ShopEase PHP Lab — Developer Operations Guide</title>
+<style>
+  @page { size: A4; margin: 12mm 14mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; color: #202941; font: 8.8pt/1.29 "Liberation Sans", Arial, sans-serif; }
+  h1, h2, h3 { color: #27366f; line-height: 1.2; }
+  h1 { margin: 0 0 8mm; font-size: 30pt; letter-spacing: -.7pt; }
+  h2 { margin: 0 0 4mm; padding-bottom: 1.5mm; border-bottom: 1px solid #dce2f0; font-size: 18pt; }
+  h3 { margin: 4mm 0 1.5mm; font-size: 11pt; }
+  p { margin: 0 0 2mm; }
+  ul, ol { margin: 1.5mm 0 3mm; padding-left: 6mm; }
+  li { margin: 0 0 1mm; }
+  code { padding: .3mm 1mm; border-radius: 2px; background: #eef1f7; font: 9pt "Liberation Mono", monospace; }
+  pre { margin: 2mm 0 4mm; padding: 3mm; overflow-wrap: anywhere; border-left: 3px solid #5364d8; background: #f2f4fa; white-space: pre-wrap; font: 8pt/1.4 "Liberation Mono", monospace; }
+  table { width: 100%; margin: 2mm 0 3mm; border-collapse: collapse; }
+  th, td { padding: 1.3mm; border: 1px solid #dce2f0; text-align: left; vertical-align: top; }
+  th { background: #eef1f7; color: #27366f; }
+  .cover { display: flex; min-height: 255mm; flex-direction: column; justify-content: center; }
+  .eyebrow { margin-bottom: 5mm; color: #5364d8; font-size: 10pt; font-weight: bold; letter-spacing: 1.5pt; text-transform: uppercase; }
+  .subtitle { max-width: 155mm; color: #59657c; font-size: 15pt; line-height: 1.45; }
+  .cover-card, .note, .warning { margin: 5mm 0; padding: 3mm 4mm; border-radius: 3px; background: #eef1f7; }
+  .warning { border-left: 4px solid #c94d55; background: #fff1f0; }
+  .note { border-left: 4px solid #5364d8; }
+  .meta { margin-top: 10mm; color: #69758d; font-size: 9pt; }
+  .page { break-after: auto; page-break-after: auto; }
+  .small { color: #69758d; font-size: 8.5pt; }
+  a { color: #3947ad; text-decoration: none; }
+  @media screen {
+    body { max-width: 210mm; margin: 12mm auto; padding: 12mm 14mm; box-shadow: 0 2mm 10mm #ccd2df; }
+    .page { min-height: 265mm; }
+  }
+</style>
+</head>
+<body>
+
+<section class="page cover">
+  <div class="eyebrow">Developer handoff · operations · maintenance</div>
+  <h1>ShopEase PHP Lab</h1>
+  <p class="subtitle">A practical guide for developers who need to diagnose failures, safely fix bugs, test changes, and update the deployed application without prior project knowledge.</p>
+  <div class="cover-card">
+    <strong>Application:</strong> plain PHP + PDO, intentionally vulnerable security-training shop<br>
+    <strong>Local database:</strong> SQLite<br>
+    <strong>Hosted database:</strong> PostgreSQL/Neon when <code>DATABASE_URL</code> is configured<br>
+    <strong>Hosting:</strong> Render Docker web service<br>
+    <strong>Guide updated:</strong> 23 October 2026
+  </div>
+  <div class="warning"><strong>Safety boundary.</strong> This application deliberately contains vulnerable behavior. Treat it as a lab, not a production shop. Keep the deployment access gate enabled, use synthetic accounts/data, and only test systems you are authorized to test. Never reset or overwrite Neon data as a troubleshooting shortcut.</div>
+  <p class="meta">Companion source: <code>docs/DEVELOPER-OPERATIONS-GUIDE.html</code><br>Start with this guide, then check <code>README.md</code> for current setup and <code>VULNERABILITIES.md</code> for source-reviewed lab behavior.</p>
+</section>
+<p style="page-break-before:always;break-before:page;margin:0;">&nbsp;</p>
+
+<section class="page">
+  <h2>1 · First response: diagnose before changing</h2>
+  <p>When a page fails, first distinguish an access-gate response from an application or database failure. Do not begin by changing credentials, resetting data, or deploying a speculative fix.</p>
+  <table>
+    <tr><th>What you see</th><th>Likely meaning</th><th>Next safe check</th></tr>
+    <tr><td>ShopEase lab sign-in page</td><td>The deployment access gate is active and the browser has not authenticated this session.</td><td>Sign in with the authorized lab gate credentials. Never remove the gate to “fix” an access response.</td></tr>
+    <tr><td><code>500</code>, PHP fatal, SQLSTATE</td><td>Application startup, route logic, or database schema/query failed.</td><td>Record the exact time, route, deployment commit, and sanitized error. Check Render logs and reproduce locally.</td></tr>
+    <tr><td><code>404</code></td><td>Wrong route, missing file, or intentionally missing resource.</td><td>Verify the URL and file path/case; check whether the record exists in the active database.</td></tr>
+    <tr><td>Page loads but data is missing</td><td>Wrong database/environment, incomplete schema migration, or no matching records.</td><td>Verify whether this process is using SQLite or PostgreSQL without printing secrets. Inspect schema and row counts read-only.</td></tr>
+    <tr><td>Browser says URL required on Delete</td><td>Client-side form validation blocked the submit before PHP received it.</td><td>Check stored relative image URLs, field types, and the delete button’s <code>formnovalidate</code>.</td></tr>
+  </table>
+  <h3>Immediate checks</h3>
+  <ol>
+    <li>Capture the complete error text and request path. Redact passwords, connection URLs, cookies, tokens, and flag values.</li>
+    <li>Check Render deploy status and identify the exact deployed commit.</li>
+    <li>Check runtime logs around the failure timestamp. Search for PHP fatal errors, <code>SQLSTATE</code>, startup messages, and migration/seed failures.</li>
+    <li>Reproduce on a disposable local SQLite database before changing the production database.</li>
+    <li>Make the smallest fix, run targeted tests and PHP lint, then review the complete diff before deployment.</li>
+    <li>Exercise both states of every password visibility control, then verify normal and SQL-injection login, learner award claims, repeat submissions, distinct certificate numbers, cart, checkout (including insufficient funds), admin actions, and flag submission.</li>
+  </ol>
+  <div class="note"><strong>Useful rule:</strong> a successful build or a <code>401</code> from the public URL is not an authenticated smoke test. Verify deployment status separately from application behavior.</div>
+  <h3>Do not expose secrets while diagnosing</h3>
+  <p>Never paste <code>DATABASE_URL</code>, Render environment dumps, HTTP authorization headers, cookies, superadmin keys, student passwords, or database flag values into issues, logs, screenshots, or chat. Share only the error and sanitized context needed to reproduce it.</p>
+  <p>PHP warnings and errors are logged by the server and are not displayed in page responses. Diagnose them through authorized, access-controlled server logs; do not turn browser error display on to troubleshoot a deployment.</p>
+</section>
+<p style="page-break-before:always;break-before:page;margin:0;">&nbsp;</p>
+
+<section class="page">
+  <h2>2 · Architecture and source map</h2>
+  <p>This is a small server-rendered PHP application without a framework. Most requests load <code>config.php</code>, which chooses the database, initializes/updates schema, and seeds demo data. In Docker, <code>auth_gate.php</code> is configured as PHP’s <code>auto_prepend_file</code>, so the session-based access check runs before application pages and presents a branded sign-in page when needed.</p>
+  <table>
+    <tr><th>Path</th><th>Responsibility</th></tr>
+    <tr><td><code>config.php</code></td><td>Vulnerability switches, session setup, database selection/connection, additive schema initialization, demo seed data, challenge-flag catalog, shared helpers.</td></tr>
+    <tr><td><code>auth_gate.php</code></td><td>Deployment access sign-in using <code>LAB_AUTH_USER</code> and <code>LAB_AUTH_PASS</code>, protected by a session cookie and CSRF token.</td></tr>
+    <tr><td><code>login.php</code></td><td>Authentication for the seeded demo accounts. Public account creation is disabled; students share the documented demo accounts.</td></tr>
+    <tr><td><code>includes/password_toggle.php</code></td><td>Shared accessible Show/Hide control for lab access, Superadmin pass-key, and learner login fields. Included by the standalone sign-in pages and shared footer.</td></tr>
+    <tr><td><code>products.php</code>, <code>api/search.php</code>, <code>product.php</code></td><td>Storefront, search response, product detail and cart entry.</td></tr>
+    <tr><td><code>cart.php</code>, <code>checkout.php</code>, <code>order_success.php</code></td><td>Session cart, order confirmation with an order-total summary and delivery form, persisted order display. Insufficient funds are checked when the learner confirms the order, not when adding an item to the cart.</td></tr>
+    <tr><td><code>admin.php</code>, <code>pages/</code></td><td>Admin route and included modules for users, products, orders, and Hall of Heroes.</td></tr>
+    <tr><td><code>superadmin.php</code></td><td>Separate pass-key-protected control panel and Hall of Heroes summary.</td></tr>
+    <tr><td><code>claim_award.php</code>, <code>submit_flag.php</code>, <code>generate_cert.php</code>, <code>includes/certificate_pdf.php</code></td><td>Achievement claim with individual learner identity, unique certificate number, owned-award authorization, and dependency-free PDF generation.</td></tr>
+    <tr><td><code>scripts/reset_demo_data.php</code></td><td>Explicit, destructive PostgreSQL demo-data reset utility. Not part of normal startup.</td></tr>
+    <tr><td><code>Dockerfile</code>, <code>render.yaml</code></td><td>PHP runtime/extensions, access-gate startup, and Render environment-variable declarations.</td></tr>
+  </table>
+  <h3>Key data relationships</h3>
+  <ul>
+    <li><code>users</code>, <code>products</code>, <code>orders</code>, and <code>order_items</code> contain shop/learner data.</li>
+    <li><code>flags</code> holds challenge identifiers, names, and generated flag strings. Do not disclose values.</li>
+    <li><code>hall_of_fame</code> stores submitted-flag achievements. <code>automatic_awards</code> separately stores detected login SQL-injection awards with demo-account snapshot, learner name/email, unique certificate number, vulnerability name, and timestamp. <code>award_claims</code> globally reserves each challenge and case-insensitive learner email across shared demo accounts, without deleting historical award rows. Learner email addresses are not verified.</li>
+    <li><code>app_metadata</code> stores one-time initialization markers. Do not remove markers casually; doing so can replay a seed operation.</li>
+  </ul>
+  <div class="note">Use <code>VULNERABILITIES.md</code> as an evidence-based inventory, not as proof that every <code>VULN_*</code> toggle has a working challenge. Preserve the lab’s explicitly intentional behaviors unless the owner asks for a security-hardening change.</div>
+</section>
+<p style="page-break-before:always;break-before:page;margin:0;">&nbsp;</p>
+
+<section class="page">
+  <h2>3 · Local development and verification</h2>
+  <h3>Requirements</h3>
+  <p>PHP 8.x with <code>pdo_sqlite</code> and <code>pdo_pgsql</code> for local SQLite and optional PostgreSQL testing. The Render image uses PHP 8.2 CLI and installs both PDO drivers. The local machine’s PHP may be newer; test with the deployed runtime when a compatibility issue is suspected.</p>
+  <h3>Start an isolated SQLite copy</h3>
+  <pre>cd vulnapp-php
+APP_DATA_DIR=/tmp/shopease-dev php -S 127.0.0.1:8081</pre>
+  <p>Open <code>http://127.0.0.1:8081</code>. <code>APP_DATA_DIR</code> keeps test data away from the repository’s normal local database. Remove only the named disposable test directory when finished. Do not point local experiments at production <code>DATABASE_URL</code>.</p>
+  <p>When <code>DATABASE_URL</code> is absent, SQLite is stored at <code>data/vulnapp.db</code> (or under <code>APP_DATA_DIR</code>). On first initialization, demo users/products and the named challenge catalog are seeded if needed. Demo account details are in the project README; do not reuse them as real credentials.</p>
+  <p>Database timestamps are stored in UTC. Learner and admin award timestamps and generated certificate times are displayed in <strong>Africa/Kampala (EAT, UTC+03:00)</strong>; do not change stored values to local time.</p>
+  <h3>Minimum verification before a change is accepted</h3>
+  <pre># From vulnapp-php/
+find . -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+git diff --check
+git status --short</pre>
+  <p>Then exercise the changed flow using a clean temporary SQLite database and synthetic users. For checkout, check both insufficient funds and a successful order. For admin edits, verify the database row changed. For uploads, test valid and rejected files. For certificate changes, check the response with <code>file certificate.pdf</code> and verify the award owner check.</p>
+  <h3>Operational behavior to preserve</h3>
+  <ul>
+    <li>Students may add low-balance items to cart; insufficient funds are reported when confirming checkout.</li>
+    <li>Cart quantity is at least one; checkout rechecks product and balance.</li>
+    <li>Search should be case-insensitive.</li>
+    <li>Flag upload accepts plain-text content and does not retain the uploaded file.</li>
+    <li>Repeated claims for the same challenge and case-insensitive learner email must reuse the original award across demo accounts; the existing certificate remains downloadable only from the account that owns it.</li>
+    <li>Admin deletion must work even when an image field contains a relative upload path.</li>
+  </ul>
+</section>
+<p style="page-break-before:always;break-before:page;margin:0;">&nbsp;</p>
+
+<section class="page">
+  <h2>4 · Database, Neon, and flag recovery</h2>
+  <h3>Database selection</h3>
+  <p><code>DATABASE_URL</code> set to a PostgreSQL connection URL selects PostgreSQL/Neon; absent means SQLite. Keep Neon’s URL private and configured as a Render secret with SSL. Normal startup runs schema initialization and demo seed checks; it does not intentionally reset shop records.</p>
+  <div class="warning"><strong>Never run the reset script as a generic repair.</strong> <code>php scripts/reset_demo_data.php --confirm</code> permanently deletes shop and learner records in the target PostgreSQL database before reseeding. It is not needed to fix a migration. Verify the target and obtain explicit approval before any destructive database operation.</div>
+  <h3>Challenge flags and the required-ID incident</h3>
+  <p>At startup, <code>seed_vulnerability_flags()</code> adds named catalog entries and records a completion marker. Existing deployments may have a legacy <code>flags.id</code> column without an automatic ID default; the current code calculates IDs from the existing maximum under a PostgreSQL advisory transaction lock. It should preserve legacy rows and seed only missing challenge names.</p>
+  <p>If flag seeding fails, the app logs <code>Vulnerability flag catalog initialization failed: ...</code> and continues initializing the shop. This is deliberate availability protection: browse/checkout routes can load, but challenge submission may fail until the catalog issue is repaired. A failure before the marker is written may be retried on each request, so inspect logs for repeated errors.</p>
+  <h3>Safe recovery sequence</h3>
+  <ol>
+    <li>Confirm the route error and corresponding Render log entry. Do not display flags or the Neon URL.</li>
+    <li>Check the existing <code>flags</code> and <code>app_metadata</code> column definitions and current numeric IDs using a read-only, authorized database session.</li>
+    <li>Back up the database before structural changes. Confirm IDs are numeric and that the unique index on <code>vulnerability_name</code> has no conflicting duplicate named rows.</li>
+    <li>Reproduce the legacy schema in disposable SQLite/PostgreSQL test data. Confirm existing flag rows remain, new catalog names get unique IDs, and the second initialization creates no duplicates.</li>
+    <li>Apply the smallest reviewed code/schema fix. Do not truncate tables, rewrite IDs referenced by achievements, drop markers, or reset demo data.</li>
+    <li>After deployment, check logs and an authenticated flag-submission flow. Verify catalog count/award metadata without printing flag values.</li>
+  </ol>
+  <h3>Flag submission symptoms</h3>
+  <ul>
+    <li><strong>Invalid flag:</strong> confirm the same active database contains the flag; local SQLite and Neon are separate stores. Confirm the uploaded file is plain text and within the size limit.</li>
+    <li><strong>PDF not authorized/not found:</strong> the certificate route requires a signed-in learner who owns the award. Check the relevant row in <code>automatic_awards</code> or <code>hall_of_fame</code>, including its user ID and certificate number.</li>
+    <li><strong>Missing student attribution:</strong> legacy awards predate identity capture. Preserve those records as legacy entries; do not invent learner names or email addresses.</li>
+  </ul>
+</section>
+<p style="page-break-before:always;break-before:page;margin:0;">&nbsp;</p>
+
+<section class="page">
+  <h2>5 · Render operation and safe deployment</h2>
+  <h3>Deployment boundary</h3>
+  <p>The Render service is named <code>vulnapp-php</code> and builds the PHP Docker image. The Docker command starts PHP’s built-in web server and prepends <code>auth_gate.php</code>. Keep these Render variables configured as secrets: <code>LAB_AUTH_USER</code>, <code>LAB_AUTH_PASS</code>, <code>SUPERADMIN_KEY</code>, and <code>DATABASE_URL</code>. The access gate now shows a ShopEase sign-in page and keeps a session after successful authentication; do not remove the gate. Never place secret values in <code>render.yaml</code>, commits, or this guide.</p>
+  <p>The locally configured Git remote is the source connected to the deployment. Check <code>git remote -v</code> and Render’s service settings before publishing; workspace display names are not necessarily GitHub repository names.</p>
+  <h3>Release checklist</h3>
+  <ol>
+    <li>Inspect <code>git status</code>. Stage only the files for this task; this workspace can contain unrelated changes.</li>
+    <li>Run PHP lint across the app and <code>git diff --check</code>. Complete local, isolated smoke tests.</li>
+    <li>Review the final diff, especially schema initialization, database writes, upload handlers, and admin routes.</li>
+    <li>Commit with a clear message and push to the verified deployment branch.</li>
+    <li>Trigger a deploy for that exact commit (or confirm auto-deploy), then wait for Render status <code>live</code>.</li>
+    <li>Check startup/runtime logs. Confirm the public URL responds. A 401 only confirms the access gate is answering; use authorized credentials to exercise the protected app.</li>
+    <li>Confirm a small end-to-end flow and monitor logs after the release. Report the commit and any access limitation accurately.</li>
+  </ol>
+  <h3>Render CLI examples</h3>
+  <pre># Inspect latest deployments
+render deploys list SERVICE_ID --output json
+
+# Inspect recent logs (avoid sharing secrets in output)
+render logs --resources SERVICE_ID --limit 100 --output json
+
+# Deploy a reviewed, pushed commit and wait for completion
+render deploys create SERVICE_ID --commit COMMIT_SHA --wait --confirm --output json</pre>
+  <p>Use the actual service ID from the Render dashboard/CLI; do not assume it from an old session. Restarting is not a substitute for fixing a failing migration. Keep Neon records intact during deploys.</p>
+  <h3>Rollback</h3>
+  <p>If the new release causes an outage, identify the last known-good deployment in Render. Roll back to that deployment or redeploy the previous known-good commit. A code rollback does not undo database changes; keep migrations additive and backward-compatible, and handle database rollback separately with a backup and review.</p>
+  <div class="note">A rollback, redeploy, or restart should not print or alter database credentials, reset Neon, or expose the intentionally vulnerable service by removing the access gate.</div>
+</section>
+<p style="page-break-before:always;break-before:page;margin:0;">&nbsp;</p>
+
+<section class="page">
+  <h2>6 · Common problems and developer handoff</h2>
+  <table>
+    <tr><th>Symptom</th><th>Checks and fix direction</th></tr>
+    <tr><td>Fatal mentions SQLSTATE <code>25P02</code></td><td>PostgreSQL is reporting a command after an earlier query already aborted the transaction. Find the first database error in logs; later errors may be secondary. Roll back the transaction on failure and avoid continuing queries inside an aborted transaction.</td></tr>
+    <tr><td>Null value violates <code>flags.id</code></td><td>Legacy table may require explicit IDs. Use the additive catalog seeder’s max-ID logic under a transaction lock; test numeric legacy IDs and uniqueness. Do not drop the primary key/default or clear rows as a shortcut.</td></tr>
+    <tr><td>Shop loads, flags do not</td><td>Flag initialization is best-effort to preserve shop availability. Look for the catalog initialization error in Render logs; repair catalog/schema before claiming flag submissions work.</td></tr>
+    <tr><td>Product image does not survive deploy</td><td>Container-local <code>uploads/</code> is not durable on Render. Use configured persistent file storage; the URL/local upload form does not itself provide persistence.</td></tr>
+    <tr><td>PDO driver missing locally</td><td>Install the matching PHP SQLite/PostgreSQL PDO extension in the developer environment. The Docker image installs <code>pdo_sqlite</code> and <code>pdo_pgsql</code>.</td></tr>
+    <tr><td>Admin add/edit triggers header warning</td><td>Admin modules are included after the page header is emitted. Do not call <code>header()</code> from the included module at that stage; render a success state or move redirect handling before output.</td></tr>
+    <tr><td>Delete asks for an image URL</td><td>Check HTML form association and browser validation. Keep the delete button’s <code>formnovalidate</code> and accept relative stored upload paths in the image field.</td></tr>
+  </table>
+  <h3>Before handing the change to another developer</h3>
+  <ul>
+    <li>State the user-visible symptom, exact failing route, and the minimal steps to reproduce.</li>
+    <li>Provide the commit SHA, deployment status, tests run, and whether the verification used SQLite or Neon.</li>
+    <li>Summarize any schema change, whether it is additive, and how existing rows are preserved.</li>
+    <li>Include relevant sanitized logs; remove secrets, cookies, personal data, and challenge flag strings.</li>
+    <li>List unresolved checks plainly. Do not say “fixed” if only a build or unauthenticated 401 check passed.</li>
+  </ul>
+  <div class="warning"><strong>Intentional lab vulnerabilities.</strong> Do not “clean up” vulnerable handlers or disable challenge switches as part of an unrelated bug fix. Conversely, do not expose this lab publicly without the access gate. Security hardening should be a separately scoped, owner-approved change.</div>
+  <p class="small">This guide reflects known application behavior as of its update date. Recheck the README, source, Render settings, and current deployment after future changes; settings and services can change independently of this guide.</p>
+</section>
+
+</body>
+</html>

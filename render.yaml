@@ -1,0 +1,15 @@
+# Render deployment configuration
+services:
+  - type: web
+    name: vulnapp-php
+    runtime: docker
+    plan: free
+    envVars:
+      - key: LAB_AUTH_USER
+        sync: false
+      - key: LAB_AUTH_PASS
+        sync: false
+      - key: SUPERADMIN_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
