@@ -78,6 +78,14 @@ $awardData = [
     'vuln_id' => 'VULN-004',
     'vulnerability_name' => 'SQL Injection in Login',
 ];
+$pdo->beginTransaction();
+try {
+    $pdo->query('SELECT 1 / 0');
+} catch (PDOException $exception) {
+    if ($exception->getCode() !== '22012') {
+        throw $exception;
+    }
+}
 $firstAward = record_automatic_award(
     $pdo,
     $user,
@@ -90,17 +98,24 @@ $repeatAward = record_automatic_award(
     $user,
     $awardData,
     'PostgreSQL Test Learner',
-    'postgres-award@example.test'
+    'POSTGRES-AWARD@example.test'
 );
 $count = (int)$pdo->query('SELECT COUNT(*) FROM automatic_awards')->fetchColumn();
+$claimCount = (int)$pdo->query(
+    "SELECT COUNT(*) FROM award_claims
+     WHERE challenge_key = 'sql injection in login'
+       AND LOWER(learner_email) = 'postgres-award@example.test'"
+)->fetchColumn();
 $legacyUsername = $pdo->query("SELECT username FROM automatic_awards WHERE vuln_id = 'VULN-LEGACY'")->fetchColumn();
 if (
     empty($firstAward['award_code'])
     || $repeatAward['award_code'] !== $firstAward['award_code']
     || $count !== 2
+    || $claimCount !== 1
+    || $pdo->inTransaction()
     || $legacyUsername !== 'legacy-user'
 ) {
-    throw new RuntimeException('PostgreSQL migration did not preserve legacy awards and save/idempotently reclaim a new award.');
+    throw new RuntimeException('PostgreSQL migration did not recover an aborted transaction and save/idempotently reclaim a new award.');
 }
 
 echo "PASS: PostgreSQL legacy award tables migrate and an automatic login award saves and reclaims once.\n";

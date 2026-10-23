@@ -519,27 +519,25 @@ function award_claim_challenge_key(string $vulnerabilityId, ?string $vulnerabili
 }
 
 function reserve_award_claim(PDO $pdo, string $challengeKey, string $learnerEmail) {
+    $reservation = $pdo->prepare(
+        'INSERT INTO award_claims (challenge_key, learner_email)
+         VALUES (?, ?) ON CONFLICT DO NOTHING'
+    );
+    $reservation->execute([$challengeKey, $learnerEmail]);
+    return $reservation->rowCount() === 1;
+}
+
+function ensure_award_connection_ready(PDO $pdo) {
     try {
-        if ($pdo->inTransaction()) {
-            $pdo->exec('SAVEPOINT reserve_award_claim_sp');
+        $pdo->query('SELECT 1')->fetchColumn();
+    } catch (PDOException $exception) {
+        if (!USE_POSTGRES || $exception->getCode() !== '25P02') {
+            throw $exception;
         }
-        $reservation = $pdo->prepare(
-            'INSERT INTO award_claims (challenge_key, learner_email)
-             VALUES (?, ?)'
-        );
-        $reservation->execute([$challengeKey, $learnerEmail]);
-        if ($pdo->inTransaction()) {
-            $pdo->exec('RELEASE SAVEPOINT reserve_award_claim_sp');
-        }
-        return $reservation->rowCount() === 1;
-    } catch (PDOException $e) {
-        if ($pdo->inTransaction()) {
-            $pdo->exec('ROLLBACK TO SAVEPOINT reserve_award_claim_sp');
-        }
-        if ($e->getCode() === '23505' || str_contains($e->getMessage(), 'UNIQUE constraint') || str_contains($e->getMessage(), 'violates unique constraint')) {
-            return false;
-        }
-        throw $e;
+
+        $pdo->exec('ROLLBACK');
+        $pdo->query('SELECT 1')->fetchColumn();
+        error_log('Recovered an aborted PostgreSQL transaction before saving an award.');
     }
 }
 
@@ -597,27 +595,35 @@ function record_vulnerability_award(
         return record_automatic_award($pdo, $user, $flag, $learnerName, $learnerEmail);
     }
 
+    ensure_award_connection_ready($pdo);
     $ownsTransaction = !$pdo->inTransaction();
     if ($ownsTransaction) {
         $pdo->beginTransaction();
     }
 
+    $stage = 'preparing challenge award';
     try {
         $flagId = (int)$flag['id'];
         $challengeKey = award_claim_challenge_key(
             (string)$flag['vuln_id'],
             is_string($flag['vulnerability_name'] ?? null) ? $flag['vulnerability_name'] : null
         );
+        $stage = 'reserving challenge claim';
         if (!reserve_award_claim($pdo, $challengeKey, $learnerEmail)) {
+            $stage = 'loading existing challenge award';
             $award = find_registered_award($pdo, $challengeKey, $learnerEmail);
+            $stage = 'ensuring existing certificate number';
             $award = ensure_registered_award_code($pdo, $award);
             if ($ownsTransaction) {
+                $stage = 'committing existing challenge award';
                 $pdo->commit();
             }
             return $award;
         }
 
+        $stage = 'generating certificate number';
         $awardCode = generate_certificate_number($pdo);
+        $stage = 'inserting challenge award';
         $awardId = insert_and_get_id(
             $pdo,
             'INSERT INTO hall_of_fame (username, email, user_id, vuln_id, flag_id, learner_name, learner_email, award_code)
@@ -633,11 +639,13 @@ function record_vulnerability_award(
                 $awardCode,
             ]
         );
+        $stage = 'linking challenge claim to award';
         $claimUpdate = $pdo->prepare(
             "UPDATE award_claims SET award_table = 'hall_of_fame', award_id = ?
              WHERE challenge_key = ? AND LOWER(learner_email) = LOWER(?)"
         );
         $claimUpdate->execute([$awardId, $challengeKey, $learnerEmail]);
+        $stage = 'reading challenge award timestamp';
         $timestampQuery = $pdo->prepare('SELECT timestamp FROM hall_of_fame WHERE id = ?');
         $timestampQuery->execute([$awardId]);
         $award = [
@@ -650,6 +658,7 @@ function record_vulnerability_award(
             'learner_email' => $learnerEmail,
         ];
         if ($ownsTransaction) {
+            $stage = 'committing challenge award';
             $pdo->commit();
         }
         return $award;
@@ -657,7 +666,11 @@ function record_vulnerability_award(
         if ($ownsTransaction && $pdo->inTransaction()) {
             $pdo->rollBack();
         }
-        throw $exception;
+        throw new RuntimeException(
+            "Failed while $stage: " . $exception->getMessage(),
+            (int)$exception->getCode(),
+            $exception
+        );
     }
 }
 
@@ -668,27 +681,35 @@ function record_automatic_award(
     string $learnerName,
     string $learnerEmail
 ) {
+    ensure_award_connection_ready($pdo);
     $ownsTransaction = !$pdo->inTransaction();
     if ($ownsTransaction) {
         $pdo->beginTransaction();
     }
 
+    $stage = 'preparing automatic award';
     try {
         $vulnerabilityId = (string)$vulnerability['vuln_id'];
         $challengeKey = award_claim_challenge_key(
             $vulnerabilityId,
             is_string($vulnerability['vulnerability_name'] ?? null) ? $vulnerability['vulnerability_name'] : null
         );
+        $stage = 'reserving automatic award claim';
         if (!reserve_award_claim($pdo, $challengeKey, $learnerEmail)) {
+            $stage = 'loading existing automatic award';
             $award = find_registered_award($pdo, $challengeKey, $learnerEmail);
+            $stage = 'ensuring existing certificate number';
             $award = ensure_registered_award_code($pdo, $award);
             if ($ownsTransaction) {
+                $stage = 'committing existing automatic award';
                 $pdo->commit();
             }
             return $award;
         }
 
+        $stage = 'generating certificate number';
         $awardCode = generate_certificate_number($pdo);
+        $stage = 'inserting automatic award';
         $awardId = insert_and_get_id(
             $pdo,
             'INSERT INTO automatic_awards
@@ -705,11 +726,13 @@ function record_automatic_award(
                 $awardCode,
             ]
         );
+        $stage = 'linking automatic award claim';
         $claimUpdate = $pdo->prepare(
             "UPDATE award_claims SET award_table = 'automatic_awards', award_id = ?
              WHERE challenge_key = ? AND LOWER(learner_email) = LOWER(?)"
         );
         $claimUpdate->execute([$awardId, $challengeKey, $learnerEmail]);
+        $stage = 'reading automatic award timestamp';
         $timestampQuery = $pdo->prepare('SELECT timestamp FROM automatic_awards WHERE id = ?');
         $timestampQuery->execute([$awardId]);
         $award = [
@@ -722,6 +745,7 @@ function record_automatic_award(
             'learner_email' => $learnerEmail,
         ];
         if ($ownsTransaction) {
+            $stage = 'committing automatic award';
             $pdo->commit();
         }
         return $award;
@@ -729,7 +753,11 @@ function record_automatic_award(
         if ($ownsTransaction && $pdo->inTransaction()) {
             $pdo->rollBack();
         }
-        throw $exception;
+        throw new RuntimeException(
+            "Failed while $stage: " . $exception->getMessage(),
+            (int)$exception->getCode(),
+            $exception
+        );
     }
 }
 
