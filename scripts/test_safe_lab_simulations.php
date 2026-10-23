@@ -19,10 +19,13 @@ if (count($toggles) !== 69) {
 
 foreach ($toggles as $toggle => $enabled) {
     $simulation = safe_lab_simulation_profile($toggle);
-    foreach (['domain', 'scenario', 'observation', 'remediation'] as $field) {
+    foreach (['domain', 'scenario', 'observation', 'remediation', 'passed'] as $field) {
         if (!isset($simulation[$field]) || trim($simulation[$field]) === '') {
             throw new RuntimeException("$toggle is missing simulation field $field.");
         }
+    }
+    if ($simulation['passed'] !== true) {
+        throw new RuntimeException("$toggle did not pass its synthetic safety check.");
     }
 }
 

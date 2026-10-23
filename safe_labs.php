@@ -24,7 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         try {
             $simulation = safe_lab_simulation_profile($toggle);
-            $_SESSION['safe_lab_completed'][$toggle] = true;
+            if ($simulation['passed']) {
+                $_SESSION['safe_lab_completed'][$toggle] = true;
+            } else {
+                $error = 'The synthetic safety check did not pass; this simulation was not recorded.';
+            }
         } catch (InvalidArgumentException $exception) {
             http_response_code(400);
             $error = $exception->getMessage();
@@ -55,6 +59,7 @@ require __DIR__ . '/includes/header.php';
       <p><b>Domain:</b> <?= htmlspecialchars($simulation['domain'], ENT_QUOTES, 'UTF-8') ?></p>
       <p><b>Scenario:</b> <?= htmlspecialchars($simulation['scenario'], ENT_QUOTES, 'UTF-8') ?></p>
       <p><b>Observation:</b> <?= htmlspecialchars($simulation['observation'], ENT_QUOTES, 'UTF-8') ?></p>
+      <p><b>Check:</b> <?= $simulation['passed'] ? 'PASS' : 'FAIL' ?></p>
       <p><b>Remediation:</b> <?= htmlspecialchars($simulation['remediation'], ENT_QUOTES, 'UTF-8') ?></p>
     </div>
   <?php endif; ?>
