@@ -356,6 +356,24 @@ function initialize_schema(PDO $pdo) {
             'learner_email' => 'TEXT',
             'award_code' => 'TEXT',
         ],
+        'automatic_awards' => [
+            'username' => 'TEXT',
+            'email' => 'TEXT',
+            'user_id' => 'INTEGER',
+            'vuln_id' => 'TEXT',
+            'vulnerability_name' => 'TEXT',
+            'learner_name' => 'TEXT',
+            'learner_email' => 'TEXT',
+            'award_code' => 'TEXT',
+            'timestamp' => USE_POSTGRES ? 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP' : 'DATETIME',
+        ],
+        'award_claims' => [
+            'challenge_key' => 'TEXT',
+            'learner_email' => 'TEXT',
+            'award_table' => 'TEXT',
+            'award_id' => 'INTEGER',
+            'created_at' => USE_POSTGRES ? 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP' : 'DATETIME',
+        ],
         'activity_logs' => ['timestamp' => USE_POSTGRES ? 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP' : 'DATETIME'],
     ];
 
