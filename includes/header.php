@@ -148,7 +148,6 @@ if (!VULN_MISSING_HEADERS) {
       ?>
         <span style="color:#fff; margin-left:18px; font-size:14px;">Balance: $<?= htmlspecialchars((float)$user['balance']) ?></span>
         <a href="/cart.php">Cart <?php if ($cart_count > 0): ?><span style="background:red; padding:2px 6px; border-radius:50%; font-size:10px;"><?= (int)$cart_count ?></span><?php endif; ?></a>
-        <a href="/submit_flag.php">Submit Flag</a>
       <?php endif; ?>
       <a href="/profile.php?id=<?= (int)$user['id'] ?>">My Profile</a>
       <?php if ($user['is_admin']): ?>

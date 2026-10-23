@@ -145,68 +145,22 @@ This confirms that the statement “every vulnerability named in `config.php` wo
 The app intentionally retains only the vulnerable code paths documented above; implementing
 every unverified toggle would require a separate scope decision.
 
-## Flags: storage, submission, and availability
+## Award and certificate workflow
 
-### Where they are stored
-
-- Startup adds the named challenge catalog to the active database's `flags` table once. This
-  works with SQLite and PostgreSQL/Neon and does not clear or reset shop records. Each catalog
-  entry receives a generated persistent flag; legacy entries are retained. The same database
-  must be used to discover and submit a flag.
-- The catalog contains named challenge entries, including repeated legacy vulnerability IDs
-  where the inventory maps more than one challenge to that ID. Names, not IDs alone, distinguish
-  those challenges.
-- A valid flag submission by a signed-in learner is recorded in `hall_of_fame` with a stable
-  demo-account reference, learner-entered name and email, unique certificate number, flag
-  reference, and timestamp. Existing achievement rows are preserved; missing certificate
-  numbers are generated during additive schema initialization.
-- Automatically detected login SQL-injection awards are stored separately in
-  `automatic_awards`, so their recording does not depend on legacy `hall_of_fame` columns or
-  the challenge-flag catalog.
-- The additive `award_claims` registry reserves each challenge and case-insensitive learner
-  email globally across demo accounts. Existing award rows are retained; when historical
-  duplicates exist, the earliest award is the canonical one for subsequent claims. The email
-  is not independently verified.
-- By default, SQLite uses `data/vulnapp.db` (or `$APP_DATA_DIR/vulnapp.db`). If `DATABASE_URL`
-  is configured, the app uses that PostgreSQL database instead. Neon is initialized on normal
-  application startup; no shop-data reset is required for the flag catalog.
-
-### How a learner claims a flag
-
-1. Work only through the authorized local lab instance and its exercises. Identify a flag
-   intentionally associated with the challenge you completed. The catalog provides persistent
-   challenge flags; it does not automatically detect or prove that an exploit occurred.
-2. Sign in to the lab and open **Submit Flag** (`/submit_flag.php`).
-3. Paste the exact flag or upload its downloaded plain-text file (up to 16 KB). The upload is
-   read for validation and is not stored on the server. After validation, enter the individual
-   learner's name and email. Awards show the shared demo account, learner identity, unique
-   certificate number, vulnerability type, and discovery time in the Superadmin **Hall of
-   Heroes**. Re-submitting the same challenge for the same learner email reuses the original
-   award across demo accounts (email comparison is case-insensitive); no duplicate certificate
-   is created.
-4. Login SQL injection is detected when the vulnerable query authenticates a learner who would
-   not authenticate with an exact username/password check. That success opens the same identity
-   claim form. This award is stored in `automatic_awards`, independently of legacy
-   `hall_of_fame` constraints and challenge-flag catalog rows. Learners enter their personal
-   name and email there, not another flag or the shared username. Other challenge types still
-   require flag submission; automatic exploit detection is not implemented for every catalog
-   entry. After a claim is saved, the page confirms the discovery and links to its PDF
-   certificate. The learner profile lists individual identity and certificate links.
-   `generate_cert.php` authorizes by certificate number and signed-in demo account.
-
-Flags are stored in the database, so do not publish their values in documentation or expose
-them in learner-facing catalog pages. A fresh deployment creates catalog values automatically;
-existing shop and achievement rows are not reset.
-
-### Flag workflow caveats
-
-- A valid flag submission records a claimed completion; it is not independent proof that the
-  learner exploited the associated vulnerability. Login SQL injection is automatically
-  detected, but the learner still self-identifies when claiming the award.
-- The catalog identifies intended challenge topics, but it does not make an unimplemented
-  vulnerability toggle into a working exercise. See the source-verified inventory above.
-- The Hall of Heroes retains the learner's name, email, shared-account name, and unique
-  certificate number so the record remains attributable if the demo account is later removed.
+- The learner-facing **Submit Flag** route has been retired. New manual flag claims are not
+  accepted; the old `flags` catalog and `hall_of_fame` records remain for compatibility and
+  historical certificate access.
+- Login SQL injection is the only challenge with automatic exploit detection. A successful
+  vulnerable login that would fail an exact username/password check opens the learner identity
+  form. Learners enter their own name and email there, not the shared username.
+- Detected login awards are stored in `automatic_awards`. The additive `award_claims` registry
+  prevents the same case-insensitive learner email from claiming the same challenge more than
+  once across demo accounts. Existing award rows and certificate numbers are preserved.
+- After a claim is saved, the page confirms the discovery and links to its PDF certificate.
+  The learner profile lists awards and certificate links; `generate_cert.php` authorizes by
+  certificate number and signed-in demo account.
+- Learner names and emails are self-reported, and emails are not independently verified. A
+  certificate records a claim; it is not proof that any other vulnerability was exploited.
 
 ## Safe ways to use this guide
 

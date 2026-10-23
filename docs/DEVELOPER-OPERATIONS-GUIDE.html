@@ -4,20 +4,20 @@
 <meta charset="utf-8">
 <title>ShopEase PHP Lab — Developer Operations Guide</title>
 <style>
-  @page { size: A4; margin: 12mm 14mm; }
+  @page { size: A4; margin: 10mm 12mm; }
   * { box-sizing: border-box; }
-  body { margin: 0; color: #202941; font: 8.8pt/1.29 "Liberation Sans", Arial, sans-serif; }
+  body { margin: 0; color: #202941; font: 8.6pt/1.22 "Liberation Sans", Arial, sans-serif; }
   h1, h2, h3 { color: #27366f; line-height: 1.2; }
   h1 { margin: 0 0 8mm; font-size: 30pt; letter-spacing: -.7pt; }
   h2 { margin: 0 0 4mm; padding-bottom: 1.5mm; border-bottom: 1px solid #dce2f0; font-size: 18pt; }
-  h3 { margin: 4mm 0 1.5mm; font-size: 11pt; }
-  p { margin: 0 0 2mm; }
-  ul, ol { margin: 1.5mm 0 3mm; padding-left: 6mm; }
-  li { margin: 0 0 1mm; }
+  h3 { margin: 3mm 0 1mm; font-size: 11pt; }
+  p { margin: 0 0 1.5mm; }
+  ul, ol { margin: 1mm 0 2mm; padding-left: 6mm; }
+  li { margin: 0 0 .6mm; }
   code { padding: .3mm 1mm; border-radius: 2px; background: #eef1f7; font: 9pt "Liberation Mono", monospace; }
   pre { margin: 2mm 0 4mm; padding: 3mm; overflow-wrap: anywhere; border-left: 3px solid #5364d8; background: #f2f4fa; white-space: pre-wrap; font: 8pt/1.4 "Liberation Mono", monospace; }
-  table { width: 100%; margin: 2mm 0 3mm; border-collapse: collapse; }
-  th, td { padding: 1.3mm; border: 1px solid #dce2f0; text-align: left; vertical-align: top; }
+  table { width: 100%; margin: 1.5mm 0 2mm; border-collapse: collapse; }
+  th, td { padding: 1mm; border: 1px solid #dce2f0; text-align: left; vertical-align: top; }
   th { background: #eef1f7; color: #27366f; }
   .cover { display: flex; min-height: 255mm; flex-direction: column; justify-content: center; }
   .eyebrow { margin-bottom: 5mm; color: #5364d8; font-size: 10pt; font-weight: bold; letter-spacing: 1.5pt; text-transform: uppercase; }
@@ -71,7 +71,7 @@
     <li>Check runtime logs around the failure timestamp. Search for PHP fatal errors, <code>SQLSTATE</code>, startup messages, and migration/seed failures.</li>
     <li>Reproduce on a disposable local SQLite database before changing the production database.</li>
     <li>Make the smallest fix, run targeted tests and PHP lint, then review the complete diff before deployment.</li>
-    <li>Exercise both states of every password visibility control, then verify normal and SQL-injection login, learner award claims, repeat submissions, distinct certificate numbers, cart, checkout (including insufficient funds), admin actions, and flag submission.</li>
+    <li>Exercise both states of every password visibility control, then verify normal and SQL-injection login, the detected-login award claim and certificate, repeat claims, cart, checkout (including insufficient funds), and admin actions.</li>
   </ol>
   <div class="note"><strong>Useful rule:</strong> a successful build or a <code>401</code> from the public URL is not an authenticated smoke test. Verify deployment status separately from application behavior.</div>
   <h3>Do not expose secrets while diagnosing</h3>
@@ -85,7 +85,7 @@
   <p>This is a small server-rendered PHP application without a framework. Most requests load <code>config.php</code>, which chooses the database, initializes/updates schema, and seeds demo data. In Docker, <code>auth_gate.php</code> is configured as PHP’s <code>auto_prepend_file</code>, so the session-based access check runs before application pages and presents a branded sign-in page when needed.</p>
   <table>
     <tr><th>Path</th><th>Responsibility</th></tr>
-    <tr><td><code>config.php</code></td><td>Vulnerability switches, session setup, database selection/connection, additive schema initialization, demo seed data, challenge-flag catalog, shared helpers.</td></tr>
+    <tr><td><code>config.php</code></td><td>Vulnerability switches, session setup, database selection/connection, additive schema initialization, demo seed data, legacy challenge-flag catalog, shared helpers.</td></tr>
     <tr><td><code>auth_gate.php</code></td><td>Deployment access sign-in using <code>LAB_AUTH_USER</code> and <code>LAB_AUTH_PASS</code>, protected by a session cookie and CSRF token.</td></tr>
     <tr><td><code>login.php</code></td><td>Authentication for the seeded demo accounts and administrator-created customer accounts. Public self-registration remains disabled.</td></tr>
     <tr><td><code>includes/password_toggle.php</code></td><td>Shared accessible Show/Hide control for lab access, Superadmin pass-key, and learner login fields. Included by the standalone sign-in pages and shared footer.</td></tr>
@@ -93,15 +93,15 @@
     <tr><td><code>cart.php</code>, <code>checkout.php</code>, <code>order_success.php</code></td><td>Session cart, order confirmation with an order-total summary and delivery form, persisted order display. Insufficient funds are checked when the learner confirms the order, not when adding an item to the cart.</td></tr>
     <tr><td><code>admin.php</code>, <code>pages/</code></td><td>Admin dashboard with store summary, product creation/editing, customer account creation/editing/deletion, order review/approval, and Hall of Heroes.</td></tr>
     <tr><td><code>superadmin.php</code></td><td>Separate pass-key-protected control panel and Hall of Heroes summary.</td></tr>
-    <tr><td><code>claim_award.php</code>, <code>submit_flag.php</code>, <code>generate_cert.php</code>, <code>includes/certificate_pdf.php</code></td><td>Flag and detected-login award claims, individual learner identity, unique certificate number, owned-award authorization, and dependency-free landscape PDF generation.</td></tr>
+    <tr><td><code>claim_award.php</code>, <code>generate_cert.php</code>, <code>includes/certificate_pdf.php</code></td><td>Detected-login award claims, individual learner identity, unique certificate number, owned-award authorization, and dependency-free landscape PDF generation.</td></tr>
     <tr><td><code>scripts/reset_demo_data.php</code></td><td>Explicit, destructive PostgreSQL demo-data reset utility. Not part of normal startup.</td></tr>
     <tr><td><code>Dockerfile</code>, <code>render.yaml</code></td><td>PHP runtime/extensions, access-gate startup, and Render environment-variable declarations.</td></tr>
   </table>
   <h3>Key data relationships</h3>
   <ul>
     <li><code>users</code>, <code>products</code>, <code>orders</code>, and <code>order_items</code> contain shop/learner data.</li>
-    <li><code>flags</code> holds challenge identifiers, names, and generated flag strings. Do not disclose values.</li>
-    <li><code>hall_of_fame</code> stores submitted-flag achievements. <code>automatic_awards</code> separately stores detected login SQL-injection awards with demo-account snapshot, learner name/email, unique certificate number, achievement name, and timestamp. <code>award_claims</code> globally reserves each challenge and case-insensitive learner email across shared demo accounts, without deleting historical award rows. Learner email addresses are not verified.</li>
+    <li><code>flags</code> and <code>hall_of_fame</code> retain the legacy challenge catalog and flag-backed achievements. Manual flag claims are no longer accepted; preserve these rows and existing certificate access.</li>
+    <li><code>automatic_awards</code> stores detected login SQL-injection awards with demo-account snapshot, learner name/email, unique certificate number, achievement name, and timestamp. <code>award_claims</code> globally reserves each detected challenge and case-insensitive learner email across shared demo accounts, without deleting historical award rows. Learner email addresses are not verified.</li>
     <li><code>app_metadata</code> stores one-time initialization markers. Do not remove markers casually; doing so can replay a seed operation.</li>
   </ul>
   <div class="note">Use <code>VULNERABILITIES.md</code> as an evidence-based inventory, not as proof that every <code>VULN_*</code> toggle has a working challenge. Preserve the lab’s explicitly intentional behaviors unless the owner asks for a security-hardening change.</div>
@@ -123,13 +123,13 @@ APP_DATA_DIR=/tmp/shopease-dev php -S 127.0.0.1:8081</pre>
 find . -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 git diff --check
 git status --short</pre>
-  <p>Then exercise the changed flow using a clean temporary SQLite database and synthetic users. Run <code>scripts/test_flag_catalog_failure.php</code> for the SQLite recovery path, <code>scripts/test_award_submission_flow.php</code> for claim submission, identity persistence, and PDF generation, and <code>scripts/test_legacy_award_schema.php</code> for old SQLite schemas. Run <code>scripts/test_postgres_flag_catalog_failure.php</code> against a fresh database named <code>shopease_test_&lt;name&gt;</code> and <code>scripts/test_postgres_award_schema.php</code> against a separate disposable PostgreSQL database. For checkout, check both insufficient funds and a successful order. For admin account creation, verify validation, duplicate rejection, customer-only role, the configured password-storage mode, and a successful login; for admin edits, verify the database value and refreshed form value. For uploads, test valid and rejected files. For certificate changes, check the response with <code>file certificate.pdf</code> and verify the award owner check.</p>
+  <p>Then exercise the changed flow using a clean temporary SQLite database and synthetic users. Run <code>scripts/test_flag_catalog_failure.php</code> for the legacy catalog initialization path, <code>scripts/test_award_submission_flow.php</code> for detected-login claim submission, identity persistence, and PDF generation, and <code>scripts/test_legacy_award_schema.php</code> for old SQLite schemas. Run <code>scripts/test_postgres_flag_catalog_failure.php</code> against a fresh database named <code>shopease_test_&lt;name&gt;</code> and <code>scripts/test_postgres_award_schema.php</code> against a separate disposable PostgreSQL database. For checkout, check both insufficient funds and a successful order. For admin account creation, verify validation, duplicate rejection, customer-only role, the configured password-storage mode, and a successful login; for admin edits, verify the database value and refreshed form value. For uploads, test valid and rejected product images. For certificate changes, check the response with <code>file certificate.pdf</code> and verify the award owner check.</p>
   <h3>Operational behavior to preserve</h3>
   <ul>
     <li>Students may add low-balance items to cart; insufficient funds are reported when confirming checkout.</li>
     <li>Cart quantity is at least one; checkout rechecks product and balance.</li>
     <li>Search should be case-insensitive.</li>
-    <li>Flag upload accepts plain-text content and does not retain the uploaded file.</li>
+    <li>Historical flag records remain intact; no learner-facing manual flag-submission flow is available.</li>
     <li>Repeated claims for the same challenge and case-insensitive learner email must reuse the original award across demo accounts; the existing certificate remains downloadable only from the account that owns it.</li>
     <li>Existing <code>automatic_awards</code> and <code>award_claims</code> tables are upgraded additively. Preserve existing rows and verify both fresh and legacy schemas.</li>
     <li>Admin deletion must work even when an image field contains a relative upload path.</li>
@@ -138,14 +138,14 @@ git status --short</pre>
 <p style="page-break-before:always;break-before:page;margin:0;">&nbsp;</p>
 
 <section class="page">
-  <h2>4 · Database, Neon, and flag recovery</h2>
+  <h2>4 · Database, Neon, and award recovery</h2>
   <h3>Database selection</h3>
   <p><code>DATABASE_URL</code> set to a PostgreSQL connection URL selects PostgreSQL/Neon; absent means SQLite. Keep Neon’s URL private and configured as a Render secret with SSL. Normal startup runs schema initialization and demo seed checks; it does not intentionally reset shop records.</p>
   <p>Schema initialization adds missing columns to existing <code>automatic_awards</code> and <code>award_claims</code> tables before creating their indexes and writing awards. The migration is additive and must retain existing certificate and claim rows. Award submission checks and recovers a PostgreSQL transaction left in the aborted state; claim reservations use <code>ON CONFLICT DO NOTHING</code> so an expected duplicate does not abort the transaction. Reproduce the original schema in a disposable database when investigating a save failure; never use the reset utility as a migration fix.</p>
   <div class="warning"><strong>Never run the reset script as a generic repair.</strong> <code>php scripts/reset_demo_data.php --confirm</code> permanently deletes shop and learner records in the target PostgreSQL database before reseeding. It is not needed to fix a migration. Verify the target and obtain explicit approval before any destructive database operation.</div>
-  <h3>Challenge flags and the required-ID incident</h3>
+  <h3>Legacy challenge-flag catalog</h3>
   <p>At startup, <code>seed_vulnerability_flags()</code> adds named catalog entries and records a completion marker. Existing deployments may have a legacy <code>flags.id</code> column without an automatic ID default; the current code calculates IDs from the existing maximum and uses a PostgreSQL session advisory lock to serialize catalog initialization without wrapping seed queries in a transaction. It should preserve legacy rows and seed only missing challenge names.</p>
-  <p>If flag seeding fails, the app logs <code>Vulnerability flag catalog initialization failed: ...</code> and continues initializing the shop. This is deliberate availability protection: browse/checkout routes can load, but challenge submission may fail until the catalog issue is repaired. A failure before the marker is written may be retried on each request, so inspect logs for repeated errors.</p>
+  <p>If legacy flag seeding fails, the app logs <code>Vulnerability flag catalog initialization failed: ...</code> and continues initializing the shop. The catalog is retained for compatibility, but learners cannot submit new manual flag claims. A failure before the marker is written may be retried on each request, so inspect logs for repeated errors.</p>
   <h3>Safe recovery sequence</h3>
   <ol>
     <li>Confirm the route error and corresponding Render log entry. Do not display flags or the Neon URL.</li>
@@ -153,7 +153,7 @@ git status --short</pre>
     <li>Back up the database before structural changes. Confirm IDs are numeric and that the unique index on <code>vulnerability_name</code> has no conflicting duplicate named rows.</li>
     <li>Reproduce the legacy schema in disposable SQLite/PostgreSQL test data. Confirm existing flag rows remain, new catalog names get unique IDs, and the second initialization creates no duplicates.</li>
     <li>Apply the smallest reviewed code/schema fix. Do not truncate tables, rewrite IDs referenced by achievements, drop markers, or reset demo data.</li>
-    <li>After deployment, check logs and an authenticated flag-submission flow. Verify catalog count/award metadata without printing flag values.</li>
+    <li>After deployment, check logs and the authenticated detected-login award-claim and certificate flow. Verify award metadata without printing learner contact details or flag values.</li>
   </ol>
   <h3>Flag submission symptoms</h3>
   <ul>
@@ -199,10 +199,10 @@ render deploys create SERVICE_ID --commit COMMIT_SHA --wait --confirm --output j
   <h2>6 · Common problems and developer handoff</h2>
   <table>
     <tr><th>Symptom</th><th>Checks and fix direction</th></tr>
-    <tr><td>Fatal mentions SQLSTATE <code>25P02</code></td><td>PostgreSQL is reporting a command after an earlier query already aborted the transaction. The flag seeder logs its exact substage (including a transaction check after the advisory lock), transaction state at entry/failure, and rollback result. Check the new log entry to distinguish lock, transaction, marker prepare/execute, and rollback failures; a <code>25P02</code> alone may still be secondary.</td></tr>
-    <tr><td>Achievement form says it could not save</td><td>Use the reference ID shown in the error to locate the matching <code>Award claim failed [ID]</code> entry in Render logs. Confirm the deployed commit includes the additive <code>automatic_awards</code>/<code>award_claims</code> migration; do not infer success from the page loading or reset Neon. Reproduce against the actual legacy schema in a disposable PostgreSQL database.</td></tr>
+    <tr><td>Fatal mentions SQLSTATE <code>25P02</code></td><td>PostgreSQL is reporting a command after an earlier query aborted the transaction. For award claims, the logged stage now checks the reservation transaction and forces deferred constraints to validate before certificate-number lookup, helping identify the originating statement instead of only the follow-on error. For legacy catalog startup failures, inspect the seeder’s exact substage, transaction check, original SQLSTATE, and rollback details. A <code>25P02</code> can still be secondary; use the matching request’s earliest log entry.</td></tr>
+    <tr><td>Award claim form says it could not save</td><td>Use the reference ID shown in the error to locate the matching <code>Award claim failed [ID]</code> entry in Render logs. Confirm the deployed commit includes the additive <code>automatic_awards</code>/<code>award_claims</code> migration; do not infer success from the page loading or reset Neon. Reproduce against the actual legacy schema in a disposable PostgreSQL database.</td></tr>
     <tr><td>Null value violates <code>flags.id</code></td><td>Legacy table may require explicit IDs. Use the additive catalog seeder’s max-ID logic under a transaction lock; test numeric legacy IDs and uniqueness. Do not drop the primary key/default or clear rows as a shortcut.</td></tr>
-    <tr><td>Shop loads, flags do not</td><td>Catalog seeding is best-effort to preserve general shop availability. Inspect the catalog initialization stage and original SQLSTATE in Render logs; repair the schema/data issue before claiming flag submissions work.</td></tr>
+    <tr><td>Legacy flag catalog seeding fails</td><td>Seeding is best-effort to preserve shop availability. Inspect the catalog initialization stage and original SQLSTATE in Render logs; existing historical achievements remain intact, and the retired manual-claim route is unaffected.</td></tr>
     <tr><td>Product image does not survive deploy</td><td>Container-local <code>uploads/</code> is not durable on Render. Use configured persistent file storage; the URL/local upload form does not itself provide persistence.</td></tr>
     <tr><td>PDO driver missing locally</td><td>Install the matching PHP SQLite/PostgreSQL PDO extension in the developer environment. The Docker image installs <code>pdo_sqlite</code> and <code>pdo_pgsql</code>.</td></tr>
     <tr><td>Admin add/edit triggers header warning</td><td>Admin modules are included after the page header is emitted. Do not call <code>header()</code> from the included module at that stage; render a success state or move redirect handling before output.</td></tr>

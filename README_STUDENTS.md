@@ -8,13 +8,13 @@ instructor. Do not test other students' accounts, real services, or real custome
 1. Sign in through the lab access page, then sign in to a seeded ShopEase demo account.
 2. Work only on the assigned ShopEase instance and the demo accounts supplied by your
    instructor. The shop itself is the training target.
-3. Use **Submit Flag** (`/submit_flag.php`) to submit an assigned challenge flag. Provide your
-   own name and email when prompted. A successful claim links to a certificate and appears in
-   the Superadmin Hall of Heroes.
-4. A successful SQL-injection login bypass opens its award claim form automatically. Enter your
+3. A successful SQL-injection login bypass opens its award claim form automatically. Enter your
    own name and email, not the shared demo username or another learner's details.
-5. Download certificates from the confirmation page or your profile while signed in to the
+4. Download certificates from the confirmation page or your profile while signed in to the
    demo account that owns them.
+
+Manual flag submissions are no longer available. Existing flag-backed awards and certificates
+remain available in historical records.
 
 ## Current limitations
 

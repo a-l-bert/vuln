@@ -541,6 +541,23 @@ function ensure_award_connection_ready(PDO $pdo) {
     }
 }
 
+function validate_award_transaction(PDO $pdo, string $stage) {
+    if (!USE_POSTGRES) {
+        return;
+    }
+
+    try {
+        $pdo->exec('SET CONSTRAINTS ALL IMMEDIATE');
+        $pdo->query('SELECT 1')->fetchColumn();
+    } catch (PDOException $exception) {
+        throw new RuntimeException(
+            "PostgreSQL award transaction failed after $stage: " . $exception->getMessage(),
+            (int)$exception->getCode(),
+            $exception
+        );
+    }
+}
+
 function find_registered_award(PDO $pdo, string $challengeKey, string $learnerEmail) {
     $claim = $pdo->prepare(
         'SELECT award_table, award_id FROM award_claims
@@ -707,6 +724,10 @@ function record_automatic_award(
             return $award;
         }
 
+        $stage = 'validating reserved automatic award claim';
+        if ($ownsTransaction) {
+            validate_award_transaction($pdo, $stage);
+        }
         $stage = 'generating certificate number';
         $awardCode = generate_certificate_number($pdo);
         $stage = 'inserting automatic award';

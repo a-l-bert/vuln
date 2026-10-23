@@ -19,27 +19,21 @@ registration remains disabled. Storefront product cards preserve image aspect ra
 images within each card.
 
 The current code does not implement every vulnerability named by its configuration switches.
-See [VULNERABILITIES.md](VULNERABILITIES.md) for the source-verified inventory, limitations,
-and flag storage/submission workflow. Use only an isolated local instance with synthetic data.
+See [VULNERABILITIES.md](VULNERABILITIES.md) for the source-verified inventory and limitations.
+Use only an isolated local instance with synthetic data.
 For developers diagnosing failures or preparing updates, see the
 [Developer Operations Guide](docs/DEVELOPER-OPERATIONS-GUIDE.pdf) and its
 [editable HTML source](docs/DEVELOPER-OPERATIONS-GUIDE.html).
 
-The named challenge-flag catalog is initialized in the active SQLite or PostgreSQL/Neon
-database without resetting existing shop data. A signed-in learner can submit a discovered
-flag at `/submit_flag.php` by pasting it or selecting its downloaded plain-text file from
-their computer. Valid submissions ask for the learner's name and email, then issue a small PDF
-certificate with a unique number. Awards are listed in the Superadmin Hall of Heroes with
-the individual learner identity and shared demo account. Successful SQL-injection login
-bypasses open the award-claim form automatically; other challenges still require flag
-submission. For a login bypass, learners enter their own name and email on that form—not the
-shared demo username or another flag. Uploaded files are limited to 16 KB, read as plain text,
-and not stored by the app. Other flag submissions are self-reported and do not automatically
-detect an exploit. Directly detected login awards use the additive `automatic_awards` table,
-separate from the legacy flag-backed achievement table. The `award_claims` registry prevents
-the same case-insensitive email from claiming the same challenge twice, even across demo
-accounts; it preserves existing award rows and points repeat claims to the original account.
-Learner emails are collected for attribution but are not email-verified.
+The learner-facing flag-submission page has been retired. Only a successful SQL-injection
+login bypass is automatically detected and opens the award-claim form; learners enter their
+own name and email there to receive a PDF certificate. The legacy flag catalog, historical
+flag-backed achievements, and existing certificates remain in the database for compatibility,
+but the app no longer accepts new manual flag claims. Awards are listed in the Superadmin
+Hall of Heroes, and the learner profile provides certificate downloads. The additive
+`award_claims` registry prevents the same case-insensitive email from claiming the same
+automatically detected challenge twice across demo accounts and preserves historical award
+rows. Learner emails are collected for attribution but are not email-verified.
 
 Learners use the ShopEase storefront and its implemented challenge flows directly. See the
 [Vulnerability Reference](docs/VULNERABILITY-REFERENCE.pdf) for source-verified challenge
