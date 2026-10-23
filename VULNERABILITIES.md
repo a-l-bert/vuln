@@ -142,8 +142,8 @@ modules, not working challenges. Several hint-page suggestions also describe exe
 are not present; do not rely on hints as proof of implementation.
 
 This confirms that the statement “every vulnerability named in `config.php` works” is **false**.
-The app intentionally retains only the vulnerable code paths documented above; implementing
-every unverified toggle would require a separate scope decision.
+The app retains only the actual vulnerable code paths documented above; it does not implement
+an exercise or exploit detector for every configured switch.
 
 ## Award and certificate workflow
 
@@ -155,10 +155,10 @@ every unverified toggle would require a separate scope decision.
   form. Learners enter their own name and email there, not the shared username.
 - Detected login awards are stored in `automatic_awards`. The additive `award_claims` registry
   prevents the same case-insensitive learner email from claiming the same challenge more than
-  once across demo accounts. Existing award rows and certificate numbers are preserved.
+  once across learner accounts. Existing award rows and certificate numbers are preserved.
 - After a claim is saved, the page confirms the discovery and links to its PDF certificate.
   The learner profile lists awards and certificate links; `generate_cert.php` authorizes by
-  certificate number and signed-in demo account.
+  certificate number and signed-in learner account.
 - Learner names and emails are self-reported, and emails are not independently verified. A
   certificate records a claim; it is not proof that any other vulnerability was exploited.
 

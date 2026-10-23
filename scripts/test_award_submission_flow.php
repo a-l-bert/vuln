@@ -101,6 +101,8 @@ if (
     !str_starts_with($certificate, '%PDF-1.4')
     || !str_contains($certificate, 'Award Flow Learner')
     || !str_contains($certificate, 'award-flow@example.test')
+    || !str_contains($certificate, 'Account: alice')
+    || str_contains($certificate, 'Demo account:')
     || !str_contains($certificate, $awardCode)
 ) {
     throw new RuntimeException('The saved award did not generate a matching learner certificate PDF.');

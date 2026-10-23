@@ -90,35 +90,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $page_title = $award ? 'Achievement recorded' : 'Claim your achievement';
+$awardTitle = is_array($flag) ? (string)($flag['vulnerability_name'] ?: $flag['vuln_id']) : 'Training challenge';
 require __DIR__ . '/includes/header.php';
 ?>
 <section class="card" style="max-width:700px;margin:32px auto;">
   <?php if ($pendingAwardError && !$flag): ?>
-    <div class="error" role="alert">Your login bypass was detected, but we could not prepare the achievement record. Please contact your lab instructor; you do not need to submit another flag.</div>
+    <div class="error" role="alert">Your login bypass was detected, but we could not prepare the achievement record. Please contact your lab instructor; you do not need to repeat the login.</div>
     <a class="button-link" href="/products.php">Continue to ShopEase</a>
   <?php elseif ($award && (int)$award['user_id'] !== (int)$user['id']): ?>
     <div class="success" role="status">
-      <strong>No duplicate award was created.</strong> This challenge has already been recorded for this email. Sign in to the demo account used for the original claim to access its certificate.
+      <strong>No duplicate award was created.</strong> This challenge has already been recorded for this email. Sign in to the account used for the original claim to access its certificate.
     </div>
     <a href="/products.php">Return to ShopEase</a>
   <?php elseif ($award): ?>
     <div class="success" role="status">
-      <strong>Discovery confirmed.</strong> Your achievement has been recorded for <?= htmlspecialchars($learnerName) ?>.
+      <strong>Discovery recorded.</strong> Your achievement has been recorded for <?= htmlspecialchars($learnerName) ?>.
     </div>
     <h1>Congratulations, <?= htmlspecialchars($learnerName) ?>!</h1>
-    <p>You successfully demonstrated <strong><?= htmlspecialchars($flag['vulnerability_name'] ?: $flag['vuln_id']) ?></strong>.</p>
+    <p>Your detected login bypass was <strong><?= htmlspecialchars($awardTitle) ?></strong>.</p>
     <p>Your unique certificate number is <strong><?= htmlspecialchars($award['award_code']) ?></strong>.</p>
-    <p class="muted">This award is linked to <?= htmlspecialchars($learnerEmail) ?> and the shared demo account <?= htmlspecialchars($user['username']) ?>.</p>
+    <p class="muted">This award is linked to <?= htmlspecialchars($learnerEmail) ?> and your ShopEase account <?= htmlspecialchars($user['username']) ?>.</p>
     <p><a class="button-link" href="/generate_cert.php?award_code=<?= rawurlencode($award['award_code']) ?>">Download your certificate</a></p>
     <a href="/products.php">Return to ShopEase</a>
   <?php else: ?>
     <span class="detail-kicker">Discovery confirmed</span>
     <h1>Claim your achievement</h1>
-    <p class="muted">Your login bypass was detected. You do not need to submit another flag or enter the shared demo username. Enter your own name and email below so the award and certificate identify you.</p>
+    <p class="muted">Your login bypass was detected. Enter your own name and email so the award and certificate identify you.</p>
     <?php if ($error !== null): ?><div class="error" role="alert"><?= htmlspecialchars($error) ?></div><?php endif; ?>
     <form method="POST" action="/claim_award.php">
       <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['award_claim_csrf'], ENT_QUOTES, 'UTF-8') ?>">
-      <label for="learner-name">Your full name (not the demo username)</label>
+      <label for="learner-name">Your full name</label>
       <input id="learner-name" type="text" name="learner_name" maxlength="100" autocomplete="name" value="<?= htmlspecialchars($learnerName) ?>" required>
       <label for="learner-email">Your personal email</label>
       <input id="learner-email" type="email" name="learner_email" maxlength="254" autocomplete="email" value="<?= htmlspecialchars($learnerEmail) ?>" required>

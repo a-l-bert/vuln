@@ -10,8 +10,7 @@ if (!$profile) {
     http_response_code(404);
 }
 
-// Fetch user's exploited flags
-$flags = [];
+$awards = [];
 if ($profile) {
     $stmt = get_db()->prepare(
         "SELECT h.vuln_id, h.timestamp, h.learner_name, h.learner_email, h.award_code,
@@ -24,14 +23,14 @@ if ($profile) {
          ORDER BY h.timestamp DESC"
     );
     $stmt->execute([$profile['id'], $profile['username']]);
-    $flags = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $awards = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $automaticAwards = get_db()->prepare(
         'SELECT vuln_id, timestamp, learner_name, learner_email, award_code, vulnerability_name
          FROM automatic_awards WHERE user_id = ? ORDER BY timestamp DESC'
     );
     $automaticAwards->execute([$profile['id']]);
-    $flags = array_merge($flags, $automaticAwards->fetchAll(PDO::FETCH_ASSOC));
-    usort($flags, static fn($left, $right) => strcmp($right['timestamp'], $left['timestamp']));
+    $awards = array_merge($awards, $automaticAwards->fetchAll(PDO::FETCH_ASSOC));
+    usort($awards, static fn($left, $right) => strcmp($right['timestamp'], $left['timestamp']));
 }
 
 $page_title = 'Profile';
@@ -44,17 +43,17 @@ require __DIR__ . '/includes/header.php';
     <p><strong>Email:</strong> <?= htmlspecialchars($profile['email']) ?></p>
     <p><strong>Balance:</strong> $<?= htmlspecialchars((float)$profile['balance']) ?></p>
     
-    <h3>Flags Earned</h3>
+    <h3>Awards &amp; Certificates</h3>
     <ul>
-        <?php foreach ($flags as $f): ?>
+        <?php foreach ($awards as $award): ?>
             <li>
-                <?= htmlspecialchars($f['vulnerability_name']) ?> (<?= htmlspecialchars($f['vuln_id']) ?>)
-                — <?= htmlspecialchars(format_eat_datetime($f['timestamp'])) ?>
-                <?php if (!empty($f['learner_name'])): ?>
-                    <br><span class="muted">Claimed by <?= htmlspecialchars($f['learner_name']) ?> · <?= htmlspecialchars($f['learner_email']) ?> · Certificate <?= htmlspecialchars($f['award_code']) ?></span>
+                <?= htmlspecialchars($award['vulnerability_name']) ?>
+                — <?= htmlspecialchars(format_eat_datetime($award['timestamp'])) ?>
+                <?php if (!empty($award['learner_name'])): ?>
+                    <br><span class="muted">Awarded to <?= htmlspecialchars($award['learner_name']) ?> · <?= htmlspecialchars($award['learner_email']) ?> · Certificate <?= htmlspecialchars($award['award_code']) ?></span>
                 <?php endif; ?>
-                <?php if (!empty($f['award_code'])): ?>
-                    <br><a href="/generate_cert.php?award_code=<?= rawurlencode($f['award_code']) ?>">Download certificate</a>
+                <?php if (!empty($award['award_code'])): ?>
+                    <br><a href="/generate_cert.php?award_code=<?= rawurlencode($award['award_code']) ?>">Download certificate</a>
                 <?php endif; ?>
             </li>
         <?php endforeach; ?>

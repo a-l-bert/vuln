@@ -5,16 +5,16 @@ instructor. Do not test other students' accounts, real services, or real custome
 
 ## Use the training shop
 
-1. Sign in through the lab access page, then sign in to a seeded ShopEase demo account.
-2. Work only on the assigned ShopEase instance and the demo accounts supplied by your
-   instructor. The shop itself is the training target.
-3. A successful SQL-injection login bypass opens its award claim form automatically. Enter your
-   own name and email, not the shared demo username or another learner's details.
-4. Download certificates from the confirmation page or your profile while signed in to the
-   demo account that owns them.
+1. Sign in through the lab access page, then sign in to your assigned ShopEase account.
+2. Work only on the ShopEase instance provided by your instructor. The shop itself is the
+   training target; only use accounts and data you are authorized to access.
+3. A successful SQL-injection login bypass is detected automatically and opens its award claim
+   form. Other vulnerabilities do not currently have automatic exploit detection.
+4. Enter your own name and email when claiming an award. Download certificates from the
+   confirmation page or your profile while signed in to the account that owns the award.
 
-Manual flag submissions are no longer available. Existing flag-backed awards and certificates
-remain available in historical records.
+Manual flag submissions are no longer available. Existing award records and certificates remain
+available in historical records.
 
 ## Current limitations
 
@@ -23,5 +23,5 @@ inventory identifies which real PHP behaviors are implemented, incomplete, or no
 See [VULNERABILITIES.md](VULNERABILITIES.md) and the
 [Vulnerability Reference](docs/VULNERABILITY-REFERENCE.pdf).
 
-Public registration is disabled. Use the demo accounts supplied by the instructor. Do not reset
-the database or change shared accounts.
+Public registration is disabled. Use the account provided by your instructor. Do not reset the
+database or alter another user's account.
