@@ -36,10 +36,11 @@ if (
     !is_string($log)
     || !str_contains($log, 'failed during inserting catalog entry VULN-001')
     || !str_contains($log, 'transaction_at_start=idle')
-    || !str_contains($log, 'rollback=transaction rolled back')
+    || !str_contains($log, 'transaction_at_failure=idle')
+    || !str_contains($log, 'rollback=not needed')
     || !str_contains($log, 'synthetic catalog failure')
 ) {
-    throw new RuntimeException('Catalog failure logs are missing stage, transaction, rollback, or original-error details.');
+    throw new RuntimeException('Catalog failure logs are missing stage, transaction, or original-error details.');
 }
 
-echo "PASS: catalog failures are diagnosed and rolled back without blocking shop initialization.\n";
+echo "PASS: catalog failures leave the connection usable and do not block shop initialization.\n";

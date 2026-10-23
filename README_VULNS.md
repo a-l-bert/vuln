@@ -7,9 +7,8 @@ checklist.
 - The printable concepts, source status, and remediation notes are in the
   [Vulnerability Reference](./docs/VULNERABILITY-REFERENCE.pdf), with its
   [editable HTML source](./docs/VULNERABILITY-REFERENCE.html).
-- The signed-in **Safe Labs** page contains a safe simulation for every configured switch.
-  Passing a simulation allows a learner to claim a certificate for simulation completion; it
-  does not prove that the corresponding real vulnerability exists or was exploited.
+- Learners exercise the actual ShopEase application. Configured switches do not, by themselves,
+  prove an issue is implemented; use the source-reviewed inventory to understand limitations.
 
 Use the PHP app only in an isolated, owner-authorized lab with synthetic data. Do not treat an
-enabled switch or a simulation certificate as evidence of a working vulnerability.
+enabled switch or an award as evidence of a working vulnerability.

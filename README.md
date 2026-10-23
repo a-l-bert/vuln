@@ -41,18 +41,9 @@ the same case-insensitive email from claiming the same challenge twice, even acr
 accounts; it preserves existing award rows and points repeat claims to the original account.
 Learner emails are collected for attribution but are not email-verified.
 
-The signed-in **Safe Labs** page (`/safe_labs.php`) provides a contained simulation for each
-of the 69 configured vulnerability switches, whether that switch is on or off. Simulations use
-fixed synthetic examples and in-memory policy checks only; they do not execute attacks or
-access real shop records, files, commands, or network resources. Completion is stored in the
-current browser session. After a simulation passes, learners can claim a uniquely numbered
-certificate for that simulation by providing their name and email. Each Safe Lab certificate
-uses the one-page landscape ShopEase design, identifies the learner and demo account, and labels
-the award **“For completing”** the simulation. It confirms simulation completion only; it is not
-an exploit finding or proof that a vulnerability exists. Discovered-flag awards use the separate
-flag-submission flow and identify their achievement as **“For discovering.”** See the
-[Vulnerability Reference](docs/VULNERABILITY-REFERENCE.pdf) for each switch's concept and
-defensive guidance.
+Learners use the ShopEase storefront and its implemented challenge flows directly. See the
+[Vulnerability Reference](docs/VULNERABILITY-REFERENCE.pdf) for source-verified challenge
+status, concepts, and defensive guidance.
 
 If an award claim fails, the page shows a short reference ID. Use that ID to find the matching
 `Award claim failed [ID]` message in the authorized Render logs; do not share database URLs,

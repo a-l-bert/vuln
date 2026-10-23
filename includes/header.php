@@ -143,7 +143,6 @@ if (!VULN_MISSING_HEADERS) {
   <div>
     <a href="/products.php">Products</a>
     <?php if ($user): ?>
-      <a href="/safe_labs.php">Safe Labs</a>
       <?php if (!$user['is_admin']): 
           $cart_count = isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
       ?>
