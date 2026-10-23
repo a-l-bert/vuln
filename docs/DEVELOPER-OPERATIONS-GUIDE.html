@@ -93,7 +93,8 @@
     <tr><td><code>cart.php</code>, <code>checkout.php</code>, <code>order_success.php</code></td><td>Session cart, order confirmation with an order-total summary and delivery form, persisted order display. Insufficient funds are checked when the learner confirms the order, not when adding an item to the cart.</td></tr>
     <tr><td><code>admin.php</code>, <code>pages/</code></td><td>Admin route and included modules for users, products, orders, and Hall of Heroes.</td></tr>
     <tr><td><code>superadmin.php</code></td><td>Separate pass-key-protected control panel and Hall of Heroes summary.</td></tr>
-    <tr><td><code>claim_award.php</code>, <code>submit_flag.php</code>, <code>generate_cert.php</code>, <code>includes/certificate_pdf.php</code></td><td>Achievement claim with individual learner identity, unique certificate number, owned-award authorization, and dependency-free PDF generation.</td></tr>
+    <tr><td><code>safe_labs.php</code>, <code>includes/safe_lab_simulations.php</code></td><td>Contained simulations for every configured switch. A passed simulation can be claimed as a completion certificate; it is not proof of exploitation.</td></tr>
+    <tr><td><code>claim_award.php</code>, <code>submit_flag.php</code>, <code>generate_cert.php</code>, <code>includes/certificate_pdf.php</code></td><td>Flag and detected-login award claims, individual learner identity, unique certificate number, owned-award authorization, and dependency-free landscape PDF generation.</td></tr>
     <tr><td><code>scripts/reset_demo_data.php</code></td><td>Explicit, destructive PostgreSQL demo-data reset utility. Not part of normal startup.</td></tr>
     <tr><td><code>Dockerfile</code>, <code>render.yaml</code></td><td>PHP runtime/extensions, access-gate startup, and Render environment-variable declarations.</td></tr>
   </table>
@@ -101,7 +102,7 @@
   <ul>
     <li><code>users</code>, <code>products</code>, <code>orders</code>, and <code>order_items</code> contain shop/learner data.</li>
     <li><code>flags</code> holds challenge identifiers, names, and generated flag strings. Do not disclose values.</li>
-    <li><code>hall_of_fame</code> stores submitted-flag achievements. <code>automatic_awards</code> separately stores detected login SQL-injection awards with demo-account snapshot, learner name/email, unique certificate number, vulnerability name, and timestamp. <code>award_claims</code> globally reserves each challenge and case-insensitive learner email across shared demo accounts, without deleting historical award rows. Learner email addresses are not verified.</li>
+    <li><code>hall_of_fame</code> stores submitted-flag achievements. <code>automatic_awards</code> separately stores detected login SQL-injection and Safe Lab simulation awards with demo-account snapshot, learner name/email, unique certificate number, achievement name, and timestamp. Safe Lab rows use distinct <code>SAFE-LAB-*</code> challenge identifiers and explicitly certify simulation completion only. <code>award_claims</code> globally reserves each challenge and case-insensitive learner email across shared demo accounts, without deleting historical award rows. Learner email addresses are not verified.</li>
     <li><code>app_metadata</code> stores one-time initialization markers. Do not remove markers casually; doing so can replay a seed operation.</li>
   </ul>
   <div class="note">Use <code>VULNERABILITIES.md</code> as an evidence-based inventory, not as proof that every <code>VULN_*</code> toggle has a working challenge. Preserve the lab’s explicitly intentional behaviors unless the owner asks for a security-hardening change.</div>
@@ -123,7 +124,7 @@ APP_DATA_DIR=/tmp/shopease-dev php -S 127.0.0.1:8081</pre>
 find . -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 git diff --check
 git status --short</pre>
-  <p>Then exercise the changed flow using a clean temporary SQLite database and synthetic users. For checkout, check both insufficient funds and a successful order. For admin edits, verify the database row changed. For uploads, test valid and rejected files. For certificate changes, check the response with <code>file certificate.pdf</code> and verify the award owner check.</p>
+  <p>Then exercise the changed flow using a clean temporary SQLite database and synthetic users. Run <code>scripts/test_safe_lab_simulations.php</code> and <code>scripts/test_safe_lab_certificates.php</code> to check every configured lab and certificate. Run <code>scripts/test_legacy_award_schema.php</code> for old SQLite schemas and <code>scripts/test_postgres_award_schema.php</code> against a disposable PostgreSQL database. For checkout, check both insufficient funds and a successful order. For admin edits, verify the database row changed. For uploads, test valid and rejected files. For certificate changes, check the response with <code>file certificate.pdf</code> and verify the award owner check.</p>
   <h3>Operational behavior to preserve</h3>
   <ul>
     <li>Students may add low-balance items to cart; insufficient funds are reported when confirming checkout.</li>
@@ -131,6 +132,8 @@ git status --short</pre>
     <li>Search should be case-insensitive.</li>
     <li>Flag upload accepts plain-text content and does not retain the uploaded file.</li>
     <li>Repeated claims for the same challenge and case-insensitive learner email must reuse the original award across demo accounts; the existing certificate remains downloadable only from the account that owns it.</li>
+    <li>Safe Lab certificates can be claimed only after that session has passed the lab's in-memory check. The landscape PDF says “For completing” for simulations and “For discovering” for flag/detected awards; do not describe a simulation certificate as proof of a vulnerability.</li>
+    <li>Existing <code>automatic_awards</code> and <code>award_claims</code> tables are upgraded additively. Preserve existing rows and verify both fresh and legacy schemas.</li>
     <li>Admin deletion must work even when an image field contains a relative upload path.</li>
   </ul>
 </section>
@@ -140,6 +143,7 @@ git status --short</pre>
   <h2>4 · Database, Neon, and flag recovery</h2>
   <h3>Database selection</h3>
   <p><code>DATABASE_URL</code> set to a PostgreSQL connection URL selects PostgreSQL/Neon; absent means SQLite. Keep Neon’s URL private and configured as a Render secret with SSL. Normal startup runs schema initialization and demo seed checks; it does not intentionally reset shop records.</p>
+  <p>Schema initialization adds missing columns to existing <code>automatic_awards</code> and <code>award_claims</code> tables before creating their indexes and writing awards. The migration is additive and must retain existing certificate and claim rows. Reproduce the original schema in a disposable database when investigating a save failure; never use the reset utility as a migration fix.</p>
   <div class="warning"><strong>Never run the reset script as a generic repair.</strong> <code>php scripts/reset_demo_data.php --confirm</code> permanently deletes shop and learner records in the target PostgreSQL database before reseeding. It is not needed to fix a migration. Verify the target and obtain explicit approval before any destructive database operation.</div>
   <h3>Challenge flags and the required-ID incident</h3>
   <p>At startup, <code>seed_vulnerability_flags()</code> adds named catalog entries and records a completion marker. Existing deployments may have a legacy <code>flags.id</code> column without an automatic ID default; the current code calculates IDs from the existing maximum under a PostgreSQL advisory transaction lock. It should preserve legacy rows and seed only missing challenge names.</p>
@@ -165,8 +169,8 @@ git status --short</pre>
 <section class="page">
   <h2>5 · Render operation and safe deployment</h2>
   <h3>Deployment boundary</h3>
-  <p>The Render service is named <code>vulnapp-php</code> and builds the PHP Docker image. The Docker command starts PHP’s built-in web server and prepends <code>auth_gate.php</code>. Keep these Render variables configured as secrets: <code>LAB_AUTH_USER</code>, <code>LAB_AUTH_PASS</code>, <code>SUPERADMIN_KEY</code>, and <code>DATABASE_URL</code>. The access gate now shows a ShopEase sign-in page and keeps a session after successful authentication; do not remove the gate. Never place secret values in <code>render.yaml</code>, commits, or this guide.</p>
-  <p>The locally configured Git remote is the source connected to the deployment. Check <code>git remote -v</code> and Render’s service settings before publishing; workspace display names are not necessarily GitHub repository names.</p>
+  <p>The Render service name and connected repository can change; verify both in the dashboard instead of assuming they match a local folder or Git remote. The Docker command starts PHP’s built-in web server and prepends <code>auth_gate.php</code>. Keep these Render variables configured as secrets: <code>LAB_AUTH_USER</code>, <code>LAB_AUTH_PASS</code>, <code>SUPERADMIN_KEY</code>, and <code>DATABASE_URL</code>. The access gate shows a ShopEase sign-in page and keeps a session after successful authentication; do not remove the gate. Never place secret values in <code>render.yaml</code>, commits, or this guide.</p>
+  <p>Verify that Render is connected to the repository containing this PHP app and to the intended branch before expecting pushed commits to deploy. An organization may contain several repositories and services with similar names; confirm the deployed commit rather than relying on a browser tab or service label.</p>
   <h3>Release checklist</h3>
   <ol>
     <li>Inspect <code>git status</code>. Stage only the files for this task; this workspace can contain unrelated changes.</li>
@@ -174,7 +178,7 @@ git status --short</pre>
     <li>Review the final diff, especially schema initialization, database writes, upload handlers, and admin routes.</li>
     <li>Commit with a clear message and push to the verified deployment branch.</li>
     <li>Trigger a deploy for that exact commit (or confirm auto-deploy), then wait for Render status <code>live</code>.</li>
-    <li>Check startup/runtime logs. Confirm the public URL responds. A 401 only confirms the access gate is answering; use authorized credentials to exercise the protected app.</li>
+    <li>Check startup/runtime logs. Confirm the public URL responds. A sign-in page only confirms the access gate is answering; use authorized credentials to exercise the protected app.</li>
     <li>Confirm a small end-to-end flow and monitor logs after the release. Report the commit and any access limitation accurately.</li>
   </ol>
   <h3>Render CLI examples</h3>
@@ -198,6 +202,7 @@ render deploys create SERVICE_ID --commit COMMIT_SHA --wait --confirm --output j
   <table>
     <tr><th>Symptom</th><th>Checks and fix direction</th></tr>
     <tr><td>Fatal mentions SQLSTATE <code>25P02</code></td><td>PostgreSQL is reporting a command after an earlier query already aborted the transaction. Find the first database error in logs; later errors may be secondary. Roll back the transaction on failure and avoid continuing queries inside an aborted transaction.</td></tr>
+    <tr><td>Achievement form says it could not save</td><td>Use the reference ID shown in the error to locate the matching <code>Award claim failed [ID]</code> entry in Render logs. Confirm the deployed commit includes the additive <code>automatic_awards</code>/<code>award_claims</code> migration; do not infer success from the page loading or reset Neon. Reproduce against the actual legacy schema in a disposable PostgreSQL database.</td></tr>
     <tr><td>Null value violates <code>flags.id</code></td><td>Legacy table may require explicit IDs. Use the additive catalog seeder’s max-ID logic under a transaction lock; test numeric legacy IDs and uniqueness. Do not drop the primary key/default or clear rows as a shortcut.</td></tr>
     <tr><td>Shop loads, flags do not</td><td>Flag initialization is best-effort to preserve shop availability. Look for the catalog initialization error in Render logs; repair catalog/schema before claiming flag submissions work.</td></tr>
     <tr><td>Product image does not survive deploy</td><td>Container-local <code>uploads/</code> is not durable on Render. Use configured persistent file storage; the URL/local upload form does not itself provide persistence.</td></tr>
@@ -210,7 +215,7 @@ render deploys create SERVICE_ID --commit COMMIT_SHA --wait --confirm --output j
     <li>State the user-visible symptom, exact failing route, and the minimal steps to reproduce.</li>
     <li>Provide the commit SHA, deployment status, tests run, and whether the verification used SQLite or Neon.</li>
     <li>Summarize any schema change, whether it is additive, and how existing rows are preserved.</li>
-    <li>Include relevant sanitized logs; remove secrets, cookies, personal data, and challenge flag strings.</li>
+    <li>Include the award error reference and its sanitized Render log entry; remove secrets, cookies, learner emails/names, and challenge flag strings.</li>
     <li>List unresolved checks plainly. Do not say “fixed” if only a build or unauthenticated 401 check passed.</li>
   </ul>
   <div class="warning"><strong>Intentional lab vulnerabilities.</strong> Do not “clean up” vulnerable handlers or disable challenge switches as part of an unrelated bug fix. Conversely, do not expose this lab publicly without the access gate. Security hardening should be a separately scoped, owner-approved change.</div>

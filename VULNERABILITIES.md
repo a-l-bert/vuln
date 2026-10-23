@@ -213,6 +213,13 @@ existing shop and achievement rows are not reset.
 - Certificate downloads are authorized by the signed-in demo account, just like other
   automatic awards. The learner profile lists simulation certificates with the rest of that
   account's awards.
+- The one-page landscape PDF uses the same ShopEase certificate layout as other awards and
+  labels simulations “For completing”; flag/detected awards are labeled “For discovering.”
+- Existing SQLite and PostgreSQL schemas receive missing `automatic_awards` and
+  `award_claims` columns additively. Existing award records are preserved. If an award claim
+  fails, use the short reference ID shown on the page to locate `Award claim failed [ID]` in
+  authorized application logs; never expose database URLs, cookies, learner contact data, or
+  flag values in a bug report.
 
 ### Flag workflow caveats
 

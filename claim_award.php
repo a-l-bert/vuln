@@ -81,8 +81,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $learnerEmail = $award['learner_email'] ?? $learnerEmail;
                 unset($_SESSION['pending_award'], $_SESSION['pending_award_flag_id']);
             } catch (Throwable $exception) {
-                error_log('Award claim failed: ' . $exception->getMessage());
-                $error = 'We could not save your achievement right now. Please retry, or contact your lab instructor if the problem continues.';
+                $errorReference = bin2hex(random_bytes(6));
+                error_log("Award claim failed [$errorReference]: " . $exception->getMessage());
+                $error = "We could not save your achievement right now. Please retry and share reference $errorReference with your lab instructor if the problem continues.";
             }
         }
     }

@@ -1,8 +1,15 @@
-# Vulnerability Lab Notes
+# Vulnerability Lab Documentation
 
-This older checklist described challenges and routes that are no longer present and incorrectly
-claimed that all entries were toggleable. Do not use it as a challenge guide.
+This short filename is retained for older links. It is not an independent vulnerability
+checklist.
 
-See [VULNERABILITIES.md](./VULNERABILITIES.md) for the source-reviewed inventory of the current
-PHP app, including which configured toggles are implemented, incomplete, disabled, or not
-demonstrated.
+- The authoritative, source-reviewed inventory is [VULNERABILITIES.md](./VULNERABILITIES.md).
+- The printable concepts, source status, and remediation notes are in the
+  [Vulnerability Reference](./docs/VULNERABILITY-REFERENCE.pdf), with its
+  [editable HTML source](./docs/VULNERABILITY-REFERENCE.html).
+- The signed-in **Safe Labs** page contains a safe simulation for every configured switch.
+  Passing a simulation allows a learner to claim a certificate for simulation completion; it
+  does not prove that the corresponding real vulnerability exists or was exploited.
+
+Use the PHP app only in an isolated, owner-authorized lab with synthetic data. Do not treat an
+enabled switch or a simulation certificate as evidence of a working vulnerability.

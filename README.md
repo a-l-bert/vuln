@@ -1,18 +1,20 @@
 # ShopEase (PHP)
 
-A normal-looking 5-page shop built in plain PHP + PDO (no framework) as an intentionally vulnerable target for security/API testing practice.
+A server-rendered shop built in plain PHP + PDO (no framework) for authorized security-training practice.
 
 ⚠️ **For local, authorized testing only.** Do not deploy publicly, do not use real data.
 
 ## Pages
 1. `login.php` — SQL injection, plaintext credentials, and session fixation.
 2. `products.php` / `api/search.php` — product browsing and search.
-3. `profile.php` — profile display and earned-flag history.
+3. `profile.php` — profile display and earned-award/certificate history.
 4. `product.php` — product details and validated image display.
-5. `admin.php` — admin pages and product/user/order management.
+5. `admin.php` — admin pages for managing products, existing users, and orders.
 
-Admin product management accepts an image URL or a local JPG, PNG, GIF, or WebP upload. Storefront
-product cards preserve image aspect ratios and fit images within each card.
+Admin product management accepts an image URL or a local JPG, PNG, GIF, or WebP upload.
+Administrators can manage existing user records; public registration and admin user creation
+are disabled. Storefront product cards preserve image aspect ratios and fit images within each
+card.
 
 The current code does not implement every vulnerability named by its configuration switches.
 See [VULNERABILITIES.md](VULNERABILITIES.md) for the source-verified inventory, limitations,
@@ -42,11 +44,17 @@ of the 69 configured vulnerability switches, whether that switch is on or off. S
 fixed synthetic examples and in-memory policy checks only; they do not execute attacks or
 access real shop records, files, commands, or network resources. Completion is stored in the
 current browser session. After a simulation passes, learners can claim a uniquely numbered
-certificate for that simulation by providing their name and email. These certificates confirm
-simulation completion only; they are not exploit findings or proof that a vulnerability exists.
-The existing discovered-flag workflow remains available separately. See the
+certificate for that simulation by providing their name and email. Each Safe Lab certificate
+uses the one-page landscape ShopEase design, identifies the learner and demo account, and labels
+the award **“For completing”** the simulation. It confirms simulation completion only; it is not
+an exploit finding or proof that a vulnerability exists. Discovered-flag awards use the separate
+flag-submission flow and identify their achievement as **“For discovering.”** See the
 [Vulnerability Reference](docs/VULNERABILITY-REFERENCE.pdf) for each switch's concept and
 defensive guidance.
+
+If an award claim fails, the page shows a short reference ID. Use that ID to find the matching
+`Award claim failed [ID]` message in the authorized Render logs; do not share database URLs,
+cookies, learner contact details, or flag values.
 
 ## Setup
 Needs PHP 8.x with the `sqlite3`/`pdo_sqlite` extension for local development (commonly
