@@ -37,6 +37,14 @@ the same case-insensitive email from claiming the same challenge twice, even acr
 accounts; it preserves existing award rows and points repeat claims to the original account.
 Learner emails are collected for attribution but are not email-verified.
 
+The signed-in **Safe Labs** page (`/safe_labs.php`) provides a contained simulation for each
+of the 69 configured vulnerability switches, whether that switch is on or off. Simulations use
+fixed synthetic examples and in-memory policy checks only; they do not execute attacks or
+access real shop records, files, commands, or network resources. Completion is stored in the
+current browser session and is not an exploit finding or certificate award. See the
+[Vulnerability Reference](docs/VULNERABILITY-REFERENCE.pdf) for each switch's concept and
+defensive guidance.
+
 ## Setup
 Needs PHP 8.x with the `sqlite3`/`pdo_sqlite` extension for local development (commonly
 `php-sqlite3` on Debian/Ubuntu). The container also includes `pdo_pgsql` for Neon.
