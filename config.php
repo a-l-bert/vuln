@@ -209,23 +209,27 @@ function seed_vulnerability_flags(PDO $pdo) {
     $ownsTransaction = !$pdo->inTransaction();
     $transactionStateAtStart = $ownsTransaction ? 'idle' : 'active';
     $savepoint = 'seed_vulnerability_flags_sp';
-    $stage = 'starting transaction';
-
-    if ($ownsTransaction) {
-        $pdo->beginTransaction();
-    } else {
-        $pdo->exec("SAVEPOINT $savepoint");
-    }
+    $stage = $ownsTransaction ? 'beginning catalog transaction' : 'creating catalog savepoint';
 
     try {
+        if ($ownsTransaction) {
+            $pdo->beginTransaction();
+        } else {
+            $pdo->exec("SAVEPOINT $savepoint");
+        }
+
         if (USE_POSTGRES) {
             $stage = 'acquiring catalog advisory lock';
             $pdo->query('SELECT pg_advisory_xact_lock(741902381)')->fetchColumn();
+            $stage = 'verifying transaction after catalog advisory lock';
+            $pdo->query('SELECT 1')->fetchColumn();
         }
 
-        $stage = 'checking catalog initialization marker';
+        $stage = 'preparing catalog initialization marker query';
         $marker = $pdo->prepare('SELECT metadata_value FROM app_metadata WHERE metadata_key = ?');
+        $stage = 'executing catalog initialization marker query';
         $marker->execute([$markerKey]);
+        $stage = 'reading catalog initialization marker';
         if ($marker->fetchColumn() !== false) {
             $stage = 'finishing initialized catalog transaction';
             if ($ownsTransaction) {
@@ -276,19 +280,25 @@ function seed_vulnerability_flags(PDO $pdo) {
             error_log("Seeded $inserted missing vulnerability flags into the active database.");
         }
     } catch (Throwable $exception) {
+        $transactionStateAtFailure = $pdo->inTransaction() ? 'active' : 'idle';
+        $rollbackOutcome = 'not needed';
         try {
             if ($ownsTransaction && $pdo->inTransaction()) {
                 $pdo->rollBack();
+                $rollbackOutcome = 'transaction rolled back';
             } elseif ($pdo->inTransaction()) {
                 $pdo->exec("ROLLBACK TO SAVEPOINT $savepoint");
                 $pdo->exec("RELEASE SAVEPOINT $savepoint");
+                $rollbackOutcome = 'savepoint rolled back';
             }
         } catch (Throwable $rollbackException) {
-            error_log('Vulnerability flag catalog rollback failed: ' . $rollbackException->getMessage());
+            $rollbackOutcome = 'rollback failed: ' . $rollbackException->getMessage();
         }
         error_log(
             "Vulnerability flag catalog initialization failed during $stage "
-            . "(transaction_at_start=$transactionStateAtStart): "
+            . "(transaction_at_start=$transactionStateAtStart, "
+            . "transaction_at_failure=$transactionStateAtFailure, "
+            . "rollback=$rollbackOutcome): "
             . $exception->getMessage()
         );
     }
