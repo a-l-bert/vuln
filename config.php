@@ -207,7 +207,9 @@ function vulnerability_flag_catalog() {
 function seed_vulnerability_flags(PDO $pdo) {
     $markerKey = 'vulnerability_flag_catalog_v4';
     $ownsTransaction = !$pdo->inTransaction();
+    $transactionStateAtStart = $ownsTransaction ? 'idle' : 'active';
     $savepoint = 'seed_vulnerability_flags_sp';
+    $stage = 'starting transaction';
 
     if ($ownsTransaction) {
         $pdo->beginTransaction();
@@ -217,12 +219,15 @@ function seed_vulnerability_flags(PDO $pdo) {
 
     try {
         if (USE_POSTGRES) {
+            $stage = 'acquiring catalog advisory lock';
             $pdo->query('SELECT pg_advisory_xact_lock(741902381)')->fetchColumn();
         }
 
+        $stage = 'checking catalog initialization marker';
         $marker = $pdo->prepare('SELECT metadata_value FROM app_metadata WHERE metadata_key = ?');
         $marker->execute([$markerKey]);
         if ($marker->fetchColumn() !== false) {
+            $stage = 'finishing initialized catalog transaction';
             if ($ownsTransaction) {
                 $pdo->commit();
             } else {
@@ -231,6 +236,7 @@ function seed_vulnerability_flags(PDO $pdo) {
             return;
         }
 
+        $stage = 'calculating next flag identifier';
         $nextId = (int)$pdo->query('SELECT COALESCE(MAX(id), 0) + 1 FROM flags')->fetchColumn();
         $find = $pdo->prepare('SELECT id FROM flags WHERE vulnerability_name = ?');
         $insert = $pdo->prepare(
@@ -240,22 +246,26 @@ function seed_vulnerability_flags(PDO $pdo) {
         $inserted = 0;
 
         foreach (vulnerability_flag_catalog() as [$vulnerabilityId, $vulnerabilityName]) {
+            $stage = "checking catalog entry $vulnerabilityId";
             $find->execute([$vulnerabilityName]);
             if ($find->fetchColumn() !== false) {
                 continue;
             }
 
             $flag = 'FLAG{' . strtoupper(bin2hex(random_bytes(16))) . '}';
+            $stage = "inserting catalog entry $vulnerabilityId";
             $insert->execute([$nextId++, $vulnerabilityId, $vulnerabilityName, $flag]);
             $inserted += $insert->rowCount();
         }
 
+        $stage = 'recording catalog initialization marker';
         $recordMarker = $pdo->prepare(
             'INSERT INTO app_metadata (metadata_key, metadata_value)
              VALUES (?, ?) ON CONFLICT (metadata_key) DO NOTHING'
         );
         $recordMarker->execute([$markerKey, gmdate('c')]);
 
+        $stage = 'committing catalog changes';
         if ($ownsTransaction) {
             $pdo->commit();
         } else {
@@ -266,13 +276,21 @@ function seed_vulnerability_flags(PDO $pdo) {
             error_log("Seeded $inserted missing vulnerability flags into the active database.");
         }
     } catch (Throwable $exception) {
-        if ($ownsTransaction && $pdo->inTransaction()) {
-            $pdo->rollBack();
-        } elseif ($pdo->inTransaction()) {
-            $pdo->exec("ROLLBACK TO SAVEPOINT $savepoint");
-            $pdo->exec("RELEASE SAVEPOINT $savepoint");
+        try {
+            if ($ownsTransaction && $pdo->inTransaction()) {
+                $pdo->rollBack();
+            } elseif ($pdo->inTransaction()) {
+                $pdo->exec("ROLLBACK TO SAVEPOINT $savepoint");
+                $pdo->exec("RELEASE SAVEPOINT $savepoint");
+            }
+        } catch (Throwable $rollbackException) {
+            error_log('Vulnerability flag catalog rollback failed: ' . $rollbackException->getMessage());
         }
-        error_log('Vulnerability flag catalog initialization failed: ' . $exception->getMessage());
+        error_log(
+            "Vulnerability flag catalog initialization failed during $stage "
+            . "(transaction_at_start=$transactionStateAtStart): "
+            . $exception->getMessage()
+        );
     }
 }
 
