@@ -27,6 +27,13 @@ foreach ($toggles as $toggle => $enabled) {
     if ($simulation['passed'] !== true) {
         throw new RuntimeException("$toggle did not pass its synthetic safety check.");
     }
+    $certificate = safe_lab_certificate_details($toggle);
+    if (
+        $certificate['vuln_id'] !== 'SAFE-LAB-' . substr($toggle, 5)
+        || !str_starts_with($certificate['vulnerability_name'], 'Safe Lab Completion: ')
+    ) {
+        throw new RuntimeException("$toggle is missing a distinct simulation certificate identity.");
+    }
 }
 
 try {

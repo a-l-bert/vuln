@@ -18,6 +18,10 @@ function send_certificate_pdf($username, $vulnerabilityName, $completedAt, $lear
     $learnerName = certificate_pdf_text($learnerName);
     $learnerEmail = certificate_pdf_text($learnerEmail);
     $awardCode = certificate_pdf_text($awardCode);
+    $achievementLabel = str_starts_with($vulnerabilityName, 'Safe Lab Completion:')
+        ? 'For completing: '
+        : 'For discovering: ';
+    $achievementLabel = certificate_pdf_text($achievementLabel);
 
     $stream = "0.18 0.25 0.55 RG 2 w 8 8 416 236 re S\n";
     $stream .= "BT /F1 18 Tf 24 216 Td (SHOPEASE LAB CERTIFICATE) Tj ET\n";
@@ -25,7 +29,7 @@ function send_certificate_pdf($username, $vulnerabilityName, $completedAt, $lear
     $stream .= "BT /F1 14 Tf 24 170 Td ($learnerName) Tj ET\n";
     $stream .= "BT /F1 9 Tf 24 151 Td ($learnerEmail) Tj ET\n";
     $stream .= "BT /F1 8 Tf 24 129 Td (Demo account: $username) Tj ET\n";
-    $stream .= "BT /F1 9 Tf 24 103 Td (For discovering: $vulnerabilityName) Tj ET\n";
+    $stream .= "BT /F1 9 Tf 24 103 Td ($achievementLabel$vulnerabilityName) Tj ET\n";
     $stream .= "BT /F1 9 Tf 24 78 Td (Certificate number: $awardCode) Tj ET\n";
     $stream .= "BT /F1 8 Tf 24 55 Td (Awarded: $completedAt) Tj ET\n";
 

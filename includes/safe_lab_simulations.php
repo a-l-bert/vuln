@@ -65,6 +65,18 @@ function safe_lab_simulation_profile(string $toggle): array
     return $profile;
 }
 
+function safe_lab_certificate_details(string $toggle): array
+{
+    safe_lab_simulation_profile($toggle);
+
+    $name = str_replace('_', ' ', substr($toggle, 5));
+
+    return [
+        'vuln_id' => 'SAFE-LAB-' . substr($toggle, 5),
+        'vulnerability_name' => 'Safe Lab Completion: ' . ucwords(strtolower($name)),
+    ];
+}
+
 function safe_lab_simulation_check(string $check): array
 {
     if ($check === 'database') {

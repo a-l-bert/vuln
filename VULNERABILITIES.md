@@ -198,6 +198,22 @@ Flags are stored in the database, so do not publish their values in documentatio
 them in learner-facing catalog pages. A fresh deployment creates catalog values automatically;
 existing shop and achievement rows are not reset.
 
+### Safe Lab simulation certificates
+
+- Every configured `VULN_*` switch has a contained simulation on `/safe_labs.php`. After the
+  simulation's synthetic check passes, a signed-in learner can enter their name and email to
+  claim a uniquely numbered certificate for that specific simulation.
+- Simulation certificates are stored in `automatic_awards` with distinct `SAFE-LAB-*` challenge
+  identifiers. Repeat claims for the same simulation and case-insensitive learner email reuse
+  the existing certificate; different simulations receive separate certificates.
+- These certificates confirm only that a fixed, in-memory simulation completed. They are not
+  challenge flags, proof of exploitation, or evidence that the corresponding application
+  vulnerability is enabled or reachable. The separate discovered-flag workflow continues to
+  represent the named challenge catalog.
+- Certificate downloads are authorized by the signed-in demo account, just like other
+  automatic awards. The learner profile lists simulation certificates with the rest of that
+  account's awards.
+
 ### Flag workflow caveats
 
 - A valid flag submission records a claimed completion; it is not independent proof that the

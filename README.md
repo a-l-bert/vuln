@@ -41,7 +41,10 @@ The signed-in **Safe Labs** page (`/safe_labs.php`) provides a contained simulat
 of the 69 configured vulnerability switches, whether that switch is on or off. Simulations use
 fixed synthetic examples and in-memory policy checks only; they do not execute attacks or
 access real shop records, files, commands, or network resources. Completion is stored in the
-current browser session and is not an exploit finding or certificate award. See the
+current browser session. After a simulation passes, learners can claim a uniquely numbered
+certificate for that simulation by providing their name and email. These certificates confirm
+simulation completion only; they are not exploit findings or proof that a vulnerability exists.
+The existing discovered-flag workflow remains available separately. See the
 [Vulnerability Reference](docs/VULNERABILITY-REFERENCE.pdf) for each switch's concept and
 defensive guidance.
 
